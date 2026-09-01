@@ -4,6 +4,60 @@ import 'app_colors.dart';
 import 'app_styles.dart';
 
 class AppTheme {
+  static ThemeData buildTheme({
+    required bool isDark,
+    required double fontSize,
+  }) {
+    final baseTheme = isDark ? darkTheme : lightTheme;
+    final safeFontSize = fontSize.isFinite && fontSize > 0 ? fontSize : 18.0;
+    final scaleFactor = safeFontSize / 18.0;
+
+    return baseTheme.copyWith(
+      textTheme: _scaleTextTheme(baseTheme.textTheme, scaleFactor),
+      primaryTextTheme:
+          _scaleTextTheme(baseTheme.primaryTextTheme, scaleFactor),
+      appBarTheme: baseTheme.appBarTheme.copyWith(
+        titleTextStyle: baseTheme.appBarTheme.titleTextStyle?.copyWith(
+          fontSize: (baseTheme.appBarTheme.titleTextStyle?.fontSize ?? 20) *
+              scaleFactor,
+        ),
+      ),
+    );
+  }
+
+  static TextTheme _scaleTextTheme(TextTheme baseTheme, double scaleFactor) {
+    return baseTheme.copyWith(
+      displayLarge: _scaleStyle(baseTheme.displayLarge, scaleFactor, 57),
+      displayMedium: _scaleStyle(baseTheme.displayMedium, scaleFactor, 45),
+      displaySmall: _scaleStyle(baseTheme.displaySmall, scaleFactor, 36),
+      headlineLarge: _scaleStyle(baseTheme.headlineLarge, scaleFactor, 32),
+      headlineMedium: _scaleStyle(baseTheme.headlineMedium, scaleFactor, 28),
+      headlineSmall: _scaleStyle(baseTheme.headlineSmall, scaleFactor, 24),
+      titleLarge: _scaleStyle(baseTheme.titleLarge, scaleFactor, 22),
+      titleMedium: _scaleStyle(baseTheme.titleMedium, scaleFactor, 16),
+      titleSmall: _scaleStyle(baseTheme.titleSmall, scaleFactor, 14),
+      bodyLarge: _scaleStyle(baseTheme.bodyLarge, scaleFactor, 16),
+      bodyMedium: _scaleStyle(baseTheme.bodyMedium, scaleFactor, 14),
+      bodySmall: _scaleStyle(baseTheme.bodySmall, scaleFactor, 12),
+      labelLarge: _scaleStyle(baseTheme.labelLarge, scaleFactor, 14),
+      labelMedium: _scaleStyle(baseTheme.labelMedium, scaleFactor, 12),
+      labelSmall: _scaleStyle(baseTheme.labelSmall, scaleFactor, 11),
+    );
+  }
+
+  static TextStyle _scaleStyle(
+    TextStyle? style,
+    double scaleFactor,
+    double fallbackSize,
+  ) {
+    final baseStyle = style ?? const TextStyle();
+    final baseSize = baseStyle.fontSize ?? fallbackSize;
+
+    return baseStyle.copyWith(
+      fontSize: baseSize * scaleFactor,
+    );
+  }
+
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,

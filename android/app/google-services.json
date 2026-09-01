@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "61249526566",
+    "project_id": "malath-app-26dab",
+    "storage_bucket": "malath-app-26dab.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61249526566:android:6f51bd90166d59966c7fe7",
+        "android_client_info": {
+          "package_name": "com.example.flutter_poject_final"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDv1yJAtPk9LmHWd4S1-mmKNfMx1caWhIc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

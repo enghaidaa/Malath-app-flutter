@@ -1,12 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../errors/exceptions.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _firebaseAuth;
+  final GoogleSignIn _googleSignIn;
 
-  FirebaseAuthService({FirebaseAuth? firebaseAuth})
-      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
+  FirebaseAuthService({
+    FirebaseAuth? firebaseAuth,
+    GoogleSignIn? googleSignIn,
+  })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+        _googleSignIn = googleSignIn ?? GoogleSignIn();
 
   User? getCurrentUser() => _firebaseAuth.currentUser;
 
@@ -15,14 +20,35 @@ class FirebaseAuthService {
     required String password,
   }) async {
     try {
-      return await _firebaseAuth.createUserWithEmailAndPassword(
+      print('AUTH SERVICE 1: Creating user...');
+
+      final result = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      print('AUTH SERVICE 2: User created');
+      print('AUTH SERVICE 3: UID = ${result.user?.uid}');
+      print('AUTH SERVICE 4: Email = ${result.user?.email}');
+
+      return result;
     } on FirebaseAuthException catch (error) {
-      throw AuthException(error.message ?? 'Registration failed');
-    } catch (_) {
-      throw AuthException('Registration failed');
+      print('AUTH SERVICE FIREBASE ERROR');
+      print('CODE: ${error.code}');
+      print('MESSAGE: ${error.message}');
+      print('DETAILS: ${error.stackTrace}');
+
+      throw AuthException(
+        '${error.code}: ${error.message ?? 'Registration failed'}',
+      );
+    } catch (error, stackTrace) {
+      print('AUTH SERVICE UNKNOWN ERROR');
+      print('ERROR: $error');
+      print('STACK: $stackTrace');
+
+      throw AuthException(
+        'Registration failed: $error',
+      );
     }
   }
 
@@ -42,9 +68,40 @@ class FirebaseAuthService {
     }
   }
 
+  Future<UserCredential> loginWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+      if (googleUser == null) {
+        throw AuthException('Google Sign-In was cancelled');
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      return await _firebaseAuth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (error) {
+      throw AuthException(
+        error.message ?? 'Google Sign-In failed',
+      );
+    } on AuthException {
+      rethrow;
+    } catch (error) {
+      throw AuthException(
+        'Google Sign-In failed: $error',
+      );
+    }
+  }
+
   Future<void> logout() async {
     try {
       await _firebaseAuth.signOut();
+      await _googleSignIn.signOut();
     } on FirebaseAuthException catch (error) {
       throw AuthException(error.message ?? 'Logout failed');
     } catch (_) {
