@@ -1,32 +1,32 @@
 # MASTER CONTEXT — MALAZ ISLAMIC APP
-# Flutter University Project — Current Development Checkpoint
 
-You are continuing an existing university Flutter project called:
+# Flutter University Project — CURRENT DEVELOPMENT CHECKPOINT
 
-"ملاذ — Islamic App"
+This document is the authoritative project context for the current state of:
 
-This document is the authoritative project context.
+**"ملاذ — Islamic App"**
 
 IMPORTANT:
-Read and understand this entire document before making any code changes.
 
-Do NOT assume previous architecture, implementation, or files that are not explicitly described here.
+The project is already substantially implemented.
 
 Do NOT restart the project.
+
+Do NOT rebuild completed features.
 
 Do NOT redesign the architecture.
 
 Continue from the CURRENT CHECKPOINT described at the end of this document.
 
-============================================================
-1. PROJECT OVERVIEW
-============================================================
+---
+
+# 1. PROJECT OVERVIEW
 
 The project is a Flutter Islamic mobile application called:
 
-"ملاذ"
+**"ملاذ"**
 
-The application will eventually contain:
+Main features:
 
 1. Authentication
 2. Quran
@@ -39,20 +39,20 @@ The application will eventually contain:
 
 Additional functionality:
 
-- Favorites
-- Hijri Date
-- User Profile
-- Local Preferences
+* Favorites
+* Hijri Date
+* User Profile
+* Local Preferences
 
 The project also contains a separate Custom Backend built with:
 
-- Node.js
-- Express
-- TypeScript
-- CORS
-- Helmet
-- Dotenv
-- Adhan
+* Node.js
+* Express
+* TypeScript
+* CORS
+* Helmet
+* Dotenv
+* Adhan
 
 The Custom Backend exists mainly to satisfy the professor's backend requirement and obtain the +3 bonus.
 
@@ -60,533 +60,338 @@ Firebase MUST remain in the project.
 
 The Custom Backend does NOT replace Firebase.
 
-============================================================
-2. PROFESSOR REQUIREMENTS
-============================================================
+---
+
+# 2. PROFESSOR REQUIREMENTS
 
 The professor requires the Flutter project to demonstrate:
 
-- Feature-Based Architecture
-- MVVM Architecture
-- Cubit
-- Dio
-- Firebase Authentication
-- Firebase Firestore
-- SharedPreferences
-- At least 4 API endpoints
-- At least 6 features
+* Feature-Based Architecture
+* MVVM Architecture
+* Cubit
+* Dio
+* Firebase Authentication
+* Firebase Firestore
+* SharedPreferences
+* At least 4 API endpoints
+* At least 6 features
 
-Our project has 8 main features.
+The project now contains all required major features.
 
-The professor also allows students to build their own backend.
+The project must remain:
 
-Our Custom Backend provides the +3 bonus.
-
-The professor emphasizes that students should understand and be able to explain their code.
-
-Therefore:
-
-The project must be:
-
-- Simple
-- Direct
-- Readable
-- Student-friendly
-- Easy to explain
-- Consistent
+* Simple
+* Direct
+* Readable
+* Student-friendly
+* Easy to explain
+* Consistent
 
 Do NOT make the project enterprise-grade.
 
-============================================================
-3. FINAL FLUTTER ARCHITECTURE
-============================================================
+---
+
+# 3. FINAL FLUTTER ARCHITECTURE
 
 The project uses:
 
 Feature-Based Architecture
-+
+
+*
+
 MVVM
-+
+
+*
+
 Cubit
-+
+
+*
+
 Repository Pattern
-+
+
+*
+
 Dio
-+
+
+*
+
 Firebase
-+
+
+*
+
 SharedPreferences
-+
+
+*
+
 GetIt
 
-The main data flow is:
+Main flow:
 
 View
+
 ↓
+
 Cubit
+
 ↓
+
 Repository
+
 ↓
+
 Repository Implementation
+
 ↓
+
 Service / Data Source
+
 ↓
+
 Dio / Firebase / SharedPreferences
 
 For API features:
 
 View
+
 ↓
+
 Cubit
+
 ↓
+
 Repository
+
 ↓
+
 RepositoryImpl
+
 ↓
-ApiService / API Consumer
+
+ApiService
+
 ↓
+
+ApiConsumer
+
+↓
+
 Dio
+
 ↓
+
 Custom Backend
 
 For Firebase:
 
 View
+
 ↓
+
 Cubit
+
 ↓
+
 Repository
+
 ↓
+
 RepositoryImpl
+
 ↓
+
 Firebase Service
+
 ↓
+
 Firebase
 
 For local settings:
 
 View
+
 ↓
+
 Cubit
+
 ↓
+
 Repository
+
 ↓
+
 RepositoryImpl
+
 ↓
+
 SharedPreferences
 
 IMPORTANT:
 
-The UI must NEVER directly access external data sources.
+UI must NEVER directly access external data sources.
 
-============================================================
-4. REPOSITORY PATTERN
-============================================================
+---
 
-Repository Pattern is required.
+# 4. PROFESSOR INTERNAL CODING STYLE
 
-Each applicable feature should have:
-
-data/
-├── models/
-└── repos/
-    ├── feature_repo.dart
-    └── feature_repo_impl.dart
-
-The abstract Repository defines WHAT operations are available.
-
-RepositoryImpl defines HOW those operations are performed.
-
-Example:
-
-QuranCubit
-↓
-QuranRepo
-↓
-QuranRepoImpl
-↓
-ApiService
-↓
-Dio
-↓
-Backend
-
-The Cubit MUST NOT know:
-
-- API URLs
-- Dio implementation
-- Firebase implementation
-- Firestore implementation
-- SharedPreferences implementation
-- HTTP implementation
-- Storage implementation
-
-Cubit communicates only with the Repository abstraction.
-
-============================================================
-5. ERROR HANDLING
-============================================================
-
-Repositories use:
-
-Either<Failure, Data>
-
-from:
-
-dartz
-
-Technical exceptions should be converted into application-level failures inside the Repository/RepositoryImpl layer.
-
-Expected flow:
-
-External System
-↓
-Exception
-↓
-RepositoryImpl
-↓
-Failure
-↓
-Either<Failure, Data>
-↓
-Cubit
-↓
-State
-↓
-View
-
-Existing/expected core errors:
-
-core/errors/
-├── exceptions.dart
-└── failures.dart
-
-Do NOT create random error handling inside Views.
-
-Cubit should use:
-
-result.fold()
-
-to handle repository results.
-
-============================================================
-6. CUBIT STYLE
-============================================================
-
-State management uses:
-
-flutter_bloc
-
-Cubit is responsible for:
-
-- Calling repository methods
-- Loading state
-- Success state
-- Failure state
-- Updating UI state
-
-Typical states:
-
-Initial
-Loading
-Success
-Failure
-
-The project prefers simple manually written states.
-
-For Cubit states:
-
-Use:
-
-part
-part of
-
-Use:
-
-sealed class
-
-Example:
-
-part of 'feature_cubit.dart';
-
-sealed class FeatureState {}
-
-final class FeatureInitial extends FeatureState {}
-
-final class FeatureLoading extends FeatureState {}
-
-final class FeatureSuccess extends FeatureState {}
-
-final class FeatureFailure extends FeatureState {
-  final String errorMessage;
-
-  FeatureFailure({
-    required this.errorMessage,
-  });
-}
-
-Do NOT use:
-
-- Freezed
-- Equatable
-- Code generation
-
-unless explicitly requested later.
-
-============================================================
-7. PROFESSOR'S INTERNAL CODING STYLE
-============================================================
-
-THIS SECTION IS VERY IMPORTANT.
-
-The professor's style is not only about folder structure.
-
-The INTERNAL CODE WRITING STYLE should also remain:
+The professor's coding style is:
 
 Simple
+
 Direct
+
 Explicit
+
 Readable
+
 Student-friendly
 
 Prefer:
 
-final
-required constructor parameters
-simple methods
-simple try/catch
-simple result.fold()
-simple state classes
-simple models
-simple repository implementations
+* final
+* required constructor parameters
+* simple methods
+* simple try/catch
+* simple result.fold()
+* simple state classes
+* simple models
+* simple repositories
 
 Avoid:
 
-- Generic abstractions
-- Generic base repositories
-- Generic Cubits
-- Generic states
-- Use-case layers
-- Service locator wrappers
-- Excessive helper classes
-- Enterprise patterns
-- Over-engineering
-- Unnecessary interfaces
-- Unnecessary dependency layers
+* Generic abstractions
+* Generic base repositories
+* Generic Cubits
+* Generic states
+* UseCase layers
+* DTO layers
+* Mapper layers
+* DataSource layers unless genuinely required
+* Excessive helper classes
+* Enterprise patterns
+* Over-engineering
 
-The professor should be able to ask:
+Golden rule:
 
-"Why did you write this?"
+> Write the simplest correct Dart code that naturally fits the existing project.
 
-and the student should be able to explain it easily.
+Professor test:
 
-The goal is:
+> Could a student explain this class to the professor line by line?
 
-"Code the team understands"
+If not, simplify it.
 
-NOT:
+---
 
-"Code that merely works."
+# 5. CORE INFRASTRUCTURE — COMPLETE
 
-============================================================
-8. CORE LAYER
-============================================================
+Core infrastructure is implemented.
 
-Core contains shared infrastructure.
-
-Expected:
+Expected structure:
 
 lib/
+
 └── core/
-    ├── api/
-    │   ├── api_consumer.dart
-    │   ├── dio_consumer.dart
-    │   └── end_points.dart
-    │
-    ├── errors/
-    │   ├── exceptions.dart
-    │   └── failures.dart
-    │
-    ├── routing/
-    │   ├── app_routes.dart
-    │   └── routes_name.dart
-    │
-    ├── services/
-    │   ├── api_service.dart
-    │   ├── firebase_auth_service.dart
-    │   └── firebase_firestore_service.dart
-    │
-    ├── theme/
-    │   ├── app_colors.dart
-    │   ├── app_styles.dart
-    │   └── app_theme.dart
-    │
-    ├── utils/
-    │   └── validators.dart
-    │
-    └── widgets/
-        ├── custom_button.dart
-        ├── custom_text_field.dart
-        └── custom_loading.dart
+
+```
+├── api/
+│   ├── api_consumer.dart
+│   ├── dio_consumer.dart
+│   └── end_points.dart
+│
+├── errors/
+│   ├── exceptions.dart
+│   └── failures.dart
+│
+├── routing/
+│   ├── app_routes.dart
+│   └── routes_name.dart
+│
+├── services/
+│   ├── api_service.dart
+│   ├── firebase_auth_service.dart
+│   └── firebase_firestore_service.dart
+│
+├── theme/
+│   ├── app_colors.dart
+│   ├── app_styles.dart
+│   └── app_theme.dart
+│
+├── utils/
+│   └── validators.dart
+│
+└── widgets/
+    ├── custom_button.dart
+    ├── custom_text_field.dart
+    └── custom_loading.dart
+```
 
 Exact files may evolve.
 
-Core must contain shared infrastructure.
+Core contains shared infrastructure only.
 
-Do NOT put feature-specific models in Core.
+Feature-specific models MUST remain inside their features.
 
-============================================================
-9. DEPENDENCY INJECTION
-============================================================
+---
 
-Dependency Injection uses:
+# 6. API INFRASTRUCTURE — COMPLETE
 
-GetIt
+Dio is configured centrally.
 
-GetIt should register:
+ApiConsumer provides:
 
-- Services
-- Repositories
-- Repository Implementations
-- Cubits
-- Required dependencies
+* get()
+* post()
+* put()
+* delete()
 
-Do NOT create dependencies randomly inside Views.
+DioConsumer implements ApiConsumer.
 
-The project should use constructor injection.
+ApiService communicates with ApiConsumer.
 
-Example:
+Expected flow:
 
-SettingsCubit(SettingsRepo settingsRepo)
-
-NOT:
-
-SettingsCubit() {
-  final repo = SettingsRepoImpl(...);
-}
-
-============================================================
-10. DIO
-============================================================
-
-All HTTP communication goes through Dio infrastructure.
-
-Never:
-
-View
-↓
-Dio
-
-Never:
-
-Cubit
-↓
-Dio
-
-Correct:
-
-Cubit
-↓
-Repository
-↓
 RepositoryImpl
+
 ↓
-ApiService / ApiConsumer
+
+ApiService
+
 ↓
+
+ApiConsumer
+
+↓
+
 Dio
+
 ↓
+
 Backend
 
-============================================================
-11. FIREBASE RESPONSIBILITIES
-============================================================
+Dio configuration includes:
 
-Firebase MUST remain.
+* Base URL
+* Connection timeout
+* Receive timeout
+* Send timeout
+* JSON headers
+* Centralized DioException handling
 
-Firebase is responsible for:
+Do NOT duplicate Dio configuration inside features.
 
-Firebase Authentication:
-- Register
-- Login
-- Logout
-- User authentication
-- Account/user profile functionality
+---
 
-Firebase Firestore:
-- My Azkar
-- Favorites
-- Prayer Tracker
-- User-specific data
+# 7. CURRENT BACKEND URL
 
-Firebase is NOT responsible for:
+The Flutter application currently uses:
 
-- General Quran data
-- General Azkar data
-- General Prayer Times
-- General Hijri data
+https://islamic-app-backend.vercel.app
 
-============================================================
-12. SHARED PREFERENCES
-============================================================
+The API endpoints are centralized in:
 
-SharedPreferences is used for LOCAL application preferences.
+core/api/end_points.dart
 
-Current Settings preferences:
-
-1. Theme
-2. Language
-3. Font Size
-
-Keys:
-
-is_dark_mode
-language_code
-font_size
-
-Settings MUST NOT use Firestore.
-
-Settings are local preferences.
-
-Correct flow:
-
-SettingsView
-↓
-SettingsCubit
-↓
-SettingsRepo
-↓
-SettingsRepoImpl
-↓
-SharedPreferences
-
-============================================================
-13. CUSTOM BACKEND
-============================================================
-
-Backend technology:
-
-Node.js
-Express
-TypeScript
-
-Responsibilities:
-
-- Quran
-- General Azkar
-- Prayer Times
-- Hijri Date
-
-Flutter communicates with the backend through:
-
-Dio.
-
-Flutter does NOT directly consume public APIs.
-
-Public APIs may be used as data sources when constructing the backend.
-
-============================================================
-14. BACKEND ENDPOINTS
-============================================================
+Current endpoints:
 
 Quran:
 
@@ -608,153 +413,373 @@ Health:
 
 GET /health
 
-Minimum required API operations are already satisfied.
+The required API endpoint requirement is already satisfied.
 
-============================================================
-15. FEATURE RESPONSIBILITIES
-============================================================
+---
 
-FEATURE 1 — AUTH
+# 8. FIREBASE INFRASTRUCTURE — COMPLETE
+
+Firebase is configured and remains part of the application.
+
+Firebase Authentication is used for:
+
+* Register
+* Login
+* Logout
+* Google Sign-In
+* User authentication
+
+Firebase Firestore is used for user-specific data:
+
+* My Azkar
+* Prayer Tracker
+* Favorites / future user-specific data
+
+Firebase MUST NOT be replaced by the Custom Backend.
+
+---
+
+# 9. FIRESTORE SERVICE — COMPLETE
+
+FirebaseFirestoreService exists in:
+
+core/services/firebase_firestore_service.dart
+
+It currently supports:
+
+* addData()
+* getData()
+* getCollectionData()
+* updateData()
+* deleteData()
+
+It converts Firebase exceptions into:
+
+FirestoreException
+
+The feature repositories use this service.
+
+The UI and Cubits MUST NOT access Firestore directly.
+
+---
+
+# 10. SHARED PREFERENCES — COMPLETE
+
+SharedPreferences is used for local settings.
+
+Settings include:
+
+* Theme
+* Language
+* Font Size
+
+Keys:
+
+is_dark_mode
+
+language_code
+
+font_size
+
+Settings MUST NOT use Firestore.
+
+Settings MUST NOT use the Custom Backend.
+
+---
+
+# 11. GET IT — COMPLETE
+
+GetIt is configured through:
+
+core/di/service_locator.dart
+
+It registers the required:
+
+* SharedPreferences
+* Dio
+* ApiConsumer
+* ApiService
+* FirebaseAuthService
+* FirebaseFirestoreService
+* Repositories
+* Cubits
+
+Repositories depend on abstractions.
+
+Cubits depend on repository abstractions.
+
+Constructor injection is used.
+
+---
+
+# 12. ERROR HANDLING — COMPLETE
+
+Existing exceptions:
+
+* ServerException
+* AuthException
+* FirestoreException
+* CacheException
+
+Existing failures:
+
+* ServerFailure
+* FirebaseAuthFailure
+* FirebaseFirestoreFailure
+* CacheFailure
+
+Repositories use:
+
+Either<Failure, T>
+
+from:
+
+package:dartz/dartz.dart
+
+Expected flow:
+
+Exception
+
+↓
+
+RepositoryImpl
+
+↓
+
+Failure
+
+↓
+
+Either<Failure, Data>
+
+↓
+
+Cubit
+
+↓
+
+State
+
+↓
+
+View
+
+Do NOT create duplicate error classes.
+
+---
+
+# 13. AUTH FEATURE — IMPLEMENTED
 
 Source:
 
 Firebase Authentication
 
-Responsibilities:
+Authentication supports:
 
-- Register
-- Login
-- Logout
-- Authentication
-- User profile
+* Email Login
+* Email Signup
+* Logout
+* Google Sign-In
 
 Flow:
 
-AuthView
+LoginView
+
 ↓
-AuthCubit
+
+LoginCubit
+
 ↓
+
 AuthRepo
+
 ↓
+
 AuthRepoImpl
+
 ↓
+
 FirebaseAuthService
+
 ↓
+
 Firebase Authentication
 
+Google:
 
-FEATURE 2 — QURAN
+LoginView
+
+↓
+
+LoginCubit
+
+↓
+
+AuthRepo
+
+↓
+
+AuthRepoImpl
+
+↓
+
+FirebaseAuthService
+
+↓
+
+Google Sign-In
+
+↓
+
+Firebase Authentication
+
+Auth is considered implemented.
+
+Do NOT rebuild Auth.
+
+Google Sign-In should be runtime-tested on the actual Android target before final submission.
+
+---
+
+# 14. QURAN FEATURE — IMPLEMENTED
 
 Source:
 
 Custom Backend
 
-Responsibilities:
+Implemented responsibilities:
 
-- Surah list
-- Surah details
-- Ayahs
-- Juz
-- Page
-- Hizb Quarter
+* Surah list
+* Surah details
+* Ayahs
+* Juz
+* Page
+* Hizb Quarter
 
-Flow:
+Models:
+
+* AyahModel
+* SurahModel
+
+Repository:
+
+* QuranRepo
+* QuranRepoImpl
+
+Cubit:
+
+* QuranCubit
+
+States:
+
+* QuranInitial
+* QuranLoading
+* QuranLoaded
+* SurahLoaded
+* QuranFailure
+
+Views:
+
+* QuranView
+* SurahDetailsView
+
+API flow:
 
 QuranView
+
 ↓
+
 QuranCubit
+
 ↓
+
 QuranRepo
+
 ↓
+
 QuranRepoImpl
+
 ↓
+
 ApiService
+
 ↓
+
 Dio
+
 ↓
-Custom Backend
 
+Backend
 
-FEATURE 3 — AZKAR
+The Quran feature is functionally implemented.
 
-Source:
+The current UI is basic/testing UI and will be improved during the UI phase.
 
-Custom Backend
+---
 
-Responsibilities:
-
-- General Azkar
-- Morning
-- Evening
-- After Prayer
-- Other categories
-
-IMPORTANT:
-
-General Azkar is NOT My Azkar.
-
-
-FEATURE 4 — PRAYERS
+# 15. AZKAR FEATURE — IMPLEMENTED
 
 Source:
 
 Custom Backend
 
-Responsibilities:
+Endpoint:
 
-- Fajr
-- Sunrise
-- Dhuhr
-- Asr
-- Maghrib
-- Isha
-- Hijri date
+GET /api/v1/azkar
 
-IMPORTANT:
+Implemented categories include:
 
-Prayer Times is NOT Prayer Tracker.
+* Morning Azkar
+* Evening Azkar
+* After Prayer Azkar
 
+Azkar data includes:
 
-FEATURE 5 — HOME
+* id
+* text
+* translation
+* transliteration
+* repetitions
+* benefit
+* reference
 
-Home is the application dashboard.
+General Azkar is separate from My Azkar.
 
-It may eventually show:
+The Azkar feature is functionally implemented.
 
-- Hijri Date
-- Today's information
-- Next Prayer
-- Prayer Times
-- Quran shortcut
-- Azkar shortcut
-- User information
+The current UI can be improved during the UI phase.
 
-Home must not directly access Dio/Firebase.
+---
 
-
-FEATURE 6 — MY AZKAR
+# 16. MY AZKAR FEATURE — IMPLEMENTED
 
 Source:
 
 Firebase Firestore
 
-User-specific custom Azkar.
+My Azkar is user-specific.
 
-Responsibilities:
+Responsibilities include:
 
-- Add
-- Edit
-- Delete
-- Count
-- Complete
+* Add
+* Edit
+* Delete
+* Count
+* Complete
 
 Example:
 
 Subhan Allah
-Target: 100
-Counter: 100
+
+Target:
+
+100
 
 Counter:
+
+100
+
+Counter progression:
 
 100 → 99 → 98 → ... → 0
 
@@ -764,1184 +789,945 @@ counter == 0
 
 the Zikr is considered completed.
 
+The feature uses:
 
-FEATURE 7 — PRAYER TRACKER
+View
+
+↓
+
+Cubit
+
+↓
+
+Repository
+
+↓
+
+RepositoryImpl
+
+↓
+
+FirebaseFirestoreService
+
+↓
+
+Firestore
+
+My Azkar MUST remain separate from General Azkar.
+
+---
+
+# 17. PRAYER TIMES FEATURE — IMPLEMENTED
+
+Source:
+
+Custom Backend
+
+Endpoint:
+
+GET /api/v1/prayers/timings
+
+The feature provides:
+
+* Fajr
+* Sunrise
+* Dhuhr
+* Asr
+* Maghrib
+* Isha
+* Hijri Date
+* Location
+* Calculation Method
+
+Current model:
+
+PrayerTimingsModel
+
+Repository:
+
+* PrayerRepo
+* PrayerRepoImpl
+
+Cubit:
+
+* PrayerCubit
+
+States:
+
+* PrayerInitial
+* PrayerLoading
+* PrayerLoaded
+* PrayerFailure
+
+The feature uses:
+
+View
+
+↓
+
+Cubit
+
+↓
+
+PrayerRepo
+
+↓
+
+PrayerRepoImpl
+
+↓
+
+ApiService
+
+↓
+
+Dio
+
+↓
+
+Backend
+
+Prayer Times is separate from Prayer Tracker.
+
+The feature is functionally implemented.
+
+The UI will be refined during the UI phase.
+
+---
+
+# 18. PRAYER TRACKER FEATURE — IMPLEMENTED
 
 Source:
 
 Firebase Firestore
 
-Tracks whether the user performed prayers.
+Prayer Tracker tracks whether the user performed prayers.
 
-This is separate from Prayer Times.
+It is separate from Prayer Times.
 
+Prayer Times answers:
 
-FEATURE 8 — SETTINGS
+"When is the prayer?"
 
-Source:
+Prayer Tracker answers:
+
+"Did the user perform the prayer?"
+
+The feature is functionally implemented.
+
+The UI will be refined during the UI phase.
+
+---
+
+# 19. SETTINGS FEATURE — COMPLETE
+
+Settings uses:
 
 SharedPreferences
 
 Responsibilities:
 
-- Theme
-- Language
-- Font Size
-
-CURRENT STATUS:
-
-SETTINGS FEATURE IS COMPLETE AND FUNCTIONAL.
-
-============================================================
-16. SETTINGS FEATURE — COMPLETED IMPLEMENTATION
-============================================================
-
-The following files were implemented:
-
-lib/features/settings/data/models/settings_model.dart
-
-lib/features/settings/data/repos/settings_repo.dart
-
-lib/features/settings/data/repos/settings_repo_impl.dart
-
-lib/features/settings/presentation/manager/settings_state.dart
-
-lib/features/settings/presentation/manager/settings_cubit.dart
-
-lib/features/settings/presentation/views/settings_view.dart
-
-GetIt registration was updated.
-
-Routing was updated.
-
-Settings uses SharedPreferences directly in SettingsRepoImpl.
-
-There is NO unnecessary SettingsLocalService.
-
-This was intentional to keep the implementation simple and consistent with the professor's style.
-
-============================================================
-17. SETTINGS MODEL
-============================================================
-
-SettingsModel contains:
-
-isDarkMode
-languageCode
-fontSize
-
-It includes:
-
-copyWith()
-toJson()
-fromJson()
-
-No code generation.
-
-============================================================
-18. SETTINGS REPOSITORY
-============================================================
-
-SettingsRepo defines:
-
-Future<Either<Failure, SettingsModel>> getSettings();
-
-Future<Either<Failure, void>> saveTheme(bool isDark);
-
-Future<Either<Failure, void>> saveLanguage(String langCode);
-
-Future<Either<Failure, void>> saveFontSize(double fontSize);
-
-Cubit depends on:
-
-SettingsRepo
-
-NOT:
-
-SettingsRepoImpl
-
-============================================================
-19. SETTINGS REPO IMPLEMENTATION
-============================================================
-
-SettingsRepoImpl receives:
-
-SharedPreferences
-
-through constructor injection.
-
-It directly reads/writes:
-
-is_dark_mode
-language_code
-font_size
-
-Exceptions are caught and converted into:
-
-CacheFailure
-
-The repository returns:
-
-left(CacheFailure(...))
-
-or:
-
-right(data)
-
-============================================================
-20. SETTINGS CUBIT
-============================================================
-
-SettingsCubit methods:
-
-loadSettings()
-toggleTheme()
-changeLanguage()
-updateFontSize()
-
-It uses:
-
-result.fold()
-
-It preserves the other settings using:
-
-copyWith()
-
-The Cubit only communicates with:
-
-SettingsRepo
-
-============================================================
-21. SETTINGS STATES
-============================================================
-
-Settings states use:
-
-part
-part of
-
-and:
-
-sealed class
-
-States:
-
-SettingsInitial
-SettingsLoading
-SettingsLoaded
-SettingsFailure
-
-SettingsLoaded contains:
-
-SettingsModel settings
-
-SettingsFailure contains:
-
-String errorMessage
-
-============================================================
-22. SETTINGS UI
-============================================================
-
-SettingsView contains:
-
-Dark Mode:
-Switch
-
-Language:
-Dropdown
-
-Font Size:
-Slider
-
-Slider range:
-
-14.0 → 32.0
-
-Default:
-
-18.0
-
-The View remains thin.
-
-It communicates with SettingsCubit.
-
-It does NOT access SharedPreferences.
-
-============================================================
-23. SETTINGS APPLICATION-WIDE INTEGRATION
-============================================================
-
-IMPORTANT:
-
-Settings is NOT merely a storage screen.
-
-Settings has been integrated with the application itself.
-
-Theme changes affect the application globally.
-
-Language changes affect the application locale.
-
-Font size changes affect the application's centralized text styling.
-
-Settings survive application restart.
-
-The application reads saved preferences and applies them.
-
-The current architecture remains simple.
-
-There is no Firestore involvement in Settings.
-
-============================================================
-24. SETTINGS GLOBAL DATA FLOW
-============================================================
-
-The effective flow is:
-
-SharedPreferences
-↓
-SettingsRepoImpl
-↓
-SettingsRepo
-↓
-SettingsCubit
-↓
-Application-level state
-↓
-MaterialApp
-↓
-Entire application
+* Theme
+* Language
+* Font Size
+
+Settings files include:
+
+* settings_model.dart
+* settings_repo.dart
+* settings_repo_impl.dart
+* settings_cubit.dart
+* settings_state.dart
+* settings_view.dart
+
+Settings is globally integrated.
 
 Theme:
 
 SettingsCubit
+
 ↓
+
 MaterialApp
+
 ↓
+
 themeMode
-↓
-AppTheme.lightTheme / AppTheme.darkTheme
 
 Language:
 
 SettingsCubit
+
 ↓
+
 MaterialApp
+
 ↓
+
 locale
-↓
-Arabic / English
 
 Font Size:
 
 SettingsCubit
+
 ↓
-centralized theme/text styling
+
+centralized text styling
+
 ↓
-application text
 
-============================================================
-25. IMPORTANT MAIN.DART CONTEXT
-============================================================
+application UI
 
-The project currently initializes Firebase first:
+Persistence is working.
 
-WidgetsFlutterBinding.ensureInitialized();
+The previous TextStyle/fontSize crash was fixed.
 
-await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+Settings is considered complete.
 
-Then:
+---
 
-await setupServiceLocator();
+# 20. HOME FEATURE — CURRENT STATUS
 
-Then:
+Home is NOT yet the final production UI.
 
-runApp(const MyApp());
+A temporary Home/Test screen was previously used to test features.
 
-MyApp uses:
+The temporary screen MUST NOT be treated as the final Home.
 
-MaterialApp
+The final Home will be built during the current UI phase.
 
-with:
+Home will eventually provide the main application dashboard.
 
-title: 'ملاذ'
+Possible content:
 
-debugShowCheckedModeBanner: false
-
-theme: AppTheme.lightTheme
-
-darkTheme: AppTheme.darkTheme
-
-initialRoute: AppRoutes.initialRoute
-
-onGenerateRoute: AppRoutes.onGenerateRoute
+* Hijri Date
+* Today's information
+* Next Prayer
+* Prayer Times
+* Quran shortcut
+* Azkar shortcut
+* My Azkar shortcut
+* Prayer Tracker shortcut
+* User information
+* Other important daily information
 
 IMPORTANT:
 
-Do NOT blindly restore:
+Home must remain a UI/dashboard layer.
 
-themeMode: ThemeMode.system
+Home MUST NOT directly access:
 
-if the current implementation has already connected themeMode to Settings.
+* Dio
+* Firebase
+* Firestore
+* SharedPreferences
 
-Theme must remain controlled by user Settings.
+If Home needs data, it communicates through the appropriate Cubit/Repository architecture.
 
-============================================================
-26. TEMPORARY HOME TEST
-============================================================
+---
 
-At one point Home was only a placeholder.
+# 21. ROUTING — CURRENT STATUS
 
-There was no real Home feature implementation.
+Routes exist for:
 
-A temporary test screen/button was used to access Settings.
+* Login
+* Signup
+* Home
+* Quran
+* Surah Details
+* Azkar
+* Prayers
+* My Azkar
+* Prayer Tracker
+* Settings
 
-The purpose was ONLY to test Settings.
+Completed feature routes should remain connected.
 
-Do NOT treat that temporary screen as the final Home implementation.
+The current routing implementation already supports:
 
-Do NOT implement Home unless explicitly requested.
+QuranView
 
-============================================================
-27. IMPORTANT BUG THAT WAS FIXED
-============================================================
+SurahDetailsView
 
-During Settings integration, the application crashed with:
+SettingsView
 
-package:flutter/src/painting/text_style.dart
+Other implemented features should be connected to their actual Views.
 
-Failed assertion:
+Placeholder routes should be removed or replaced as the final UI is completed.
 
-fontSize != null ||
-(fontSizeFactor == 1.0 && fontSizeDelta == 0.0)
+Do NOT silently change route names.
 
-The cause was related to invalid/null font-size integration with TextStyle/TextTheme.
+---
 
-The issue was fixed.
+# 22. CURRENT UI STATUS
 
-The final Settings implementation must NEVER allow a null/invalid font size to reach TextStyle.
+The application has functional feature implementations.
 
-Default font size:
+However, the current UI is still basic in several features.
 
-18.0
+The next development phase is therefore:
 
-Current valid range:
+# PHASE — UI IMPLEMENTATION & INTEGRATION
 
-14.0 → 32.0
+This phase focuses on:
 
-The application is now working correctly.
+* Final visual design
+* Custom reusable widgets
+* Feature UI
+* Home UI
+* Navigation
+* Consistent spacing
+* Typography
+* Colors
+* Cards
+* Buttons
+* Loading UI
+* Error UI
+* Empty states
+* RTL support
+* Arabic presentation
+* Responsive layouts
 
-============================================================
-28. CURRENT TEST STATUS
-============================================================
+IMPORTANT:
 
-Settings has been manually tested successfully.
+Do NOT rebuild the backend/data architecture during this phase.
 
-Confirmed:
+The existing Cubits, Repositories, Services, Models and APIs should be reused.
 
-Dark Mode:
-WORKING
+---
 
-Language:
-WORKING
+# 23. CUSTOM WIDGETS
 
-Font Size:
-WORKING
+Before building complex screens, inspect the existing Core widgets.
 
-Persistence:
-WORKING
+Shared widgets belong in:
 
-Application-wide integration:
-WORKING
+core/widgets/
 
-The previous runtime TextStyle crash:
-FIXED
+Examples:
 
-Settings feature is considered:
+* CustomButton
+* CustomTextField
+* CustomLoading
 
-PHASE 2 — SETTINGS COMPLETE
+During the UI phase, create a custom widget ONLY when:
 
-============================================================
-29. CURRENT PROJECT DEVELOPMENT STATUS
-============================================================
+1. It is reused.
+2. It represents a consistent application design element.
+3. It makes the View easier to read.
 
-PHASE 1:
-Architecture Setup
+Do NOT create a custom widget for every tiny UI element.
 
-STATUS:
-COMPLETE
+Avoid unnecessary abstraction.
 
-Phase 1 audit:
+A widget used only once can remain directly inside the View unless there is a clear reason to extract it.
 
-PASSED WITH DISTINCTION
+---
 
-The foundation was confirmed to be:
+# 24. THEME
 
-- Feature-based
-- Correct Core layer
-- Repository Pattern
-- Correct DI direction
-- Dio infrastructure
-- Firebase infrastructure
-- SharedPreferences infrastructure
-- GetIt infrastructure
-- Correct folder structure
+The application has centralized theme files:
 
-The feature folders initially existed as skeletons.
+core/theme/
 
-This was expected.
+* app_colors.dart
+* app_styles.dart
+* app_theme.dart
 
-------------------------------------------------------------
+All final UI should reuse the centralized theme.
 
-PHASE 2:
-Settings
+Do NOT scatter random colors and text styles throughout the application.
 
-STATUS:
+When a design value is repeated across multiple screens, consider placing it in the appropriate centralized theme file.
 
-COMPLETE AND WORKING
+Keep the theme simple and easy to explain.
 
-Settings is the FIRST fully implemented feature.
+---
 
-------------------------------------------------------------
+# 25. UI DEVELOPMENT ORDER
 
-NEXT FEATURE:
+The UI phase should be implemented in a controlled order.
 
-AUTH
+Recommended order:
 
-Recommended next implementation:
+1. Review existing theme
+2. Review/create shared custom widgets
+3. Final Home UI
+4. Quran UI
+5. Surah Details UI
+6. Azkar UI
+7. Prayer Times UI
+8. My Azkar UI
+9. Prayer Tracker UI
+10. Auth UI refinement
+11. Settings UI refinement
+12. Navigation / final integration
+13. Empty / Loading / Error states
+14. RTL and Arabic UI review
+15. Final application testing
 
-Authentication
+Do NOT rebuild feature logic while doing UI unless a real bug is discovered.
 
-============================================================
-30. DEVELOPMENT ORDER
-============================================================
+---
 
-Current completed:
+# 26. VIEW STYLE
 
-1. Architecture / Core
-2. Settings
+Views must remain thin.
 
-Recommended next:
+Preferred style:
 
-3. Auth
-4. Quran
-5. Prayers
-6. Azkar
-7. My Azkar
-8. Prayer Tracker
-9. Home integration
+BlocBuilder<Cubit, State>
 
-Order can change only if there is a practical reason.
+↓
 
-============================================================
-31. IMPORTANT DO-NOT-DO RULES
-============================================================
+Loading
 
-NEVER:
+↓
 
-- Put Dio calls directly in Views.
-- Put Firebase calls directly in Views.
-- Put API URLs directly inside Cubits.
-- Put Firestore implementation inside Cubits.
-- Make Cubits responsible for storage.
-- Mix General Azkar with My Azkar.
-- Mix Prayer Times with Prayer Tracker.
-- Replace Firebase with Custom Backend.
-- Put feature models in Core.
-- Add unnecessary architecture layers.
-- Add unnecessary technologies.
-- Add Firestore to Settings.
-- Add Firebase to Settings.
-- Add another state management package.
-- Use code generation without explicit approval.
-- Generate huge Quran datasets.
-- Rewrite working features unnecessarily.
-- Refactor unrelated files.
-- Change established architecture silently.
+Failure
 
-============================================================
-32. IMPLEMENTATION WORKFLOW
-============================================================
+↓
 
-For every new feature:
+Loaded
+
+↓
+
+UI
+
+Views should not contain:
+
+* API calls
+* Firebase calls
+* Firestore calls
+* Dio calls
+* SharedPreferences calls
+* Business logic
+
+UI logic should remain straightforward.
+
+---
+
+# 27. CUBIT STYLE
+
+Cubits remain simple.
+
+Typical state structure:
+
+Initial
+
+Loading
+
+Loaded / Success
+
+Failure
+
+Use:
+
+result.fold()
+
+Do NOT add unnecessary states.
+
+Do NOT add Equatable.
+
+Do NOT add Freezed.
+
+Do NOT add generated states.
+
+Do NOT move UI code into Cubits.
+
+---
+
+# 28. MODEL STYLE
+
+Models remain manually written.
+
+Use:
+
+* final
+* const constructors where appropriate
+* fromJson()
+* toJson()
+* copyWith() when needed
+
+Do NOT introduce:
+
+* json_serializable
+* Freezed
+* DTOs
+* Mapper layers
+
+unless explicitly approved.
+
+---
+
+# 29. REPOSITORY STYLE
+
+Repositories remain:
+
+abstract Repository
+
+*
+
+RepositoryImpl
+
+Expected flow:
+
+call
+
+↓
+
+receive
+
+↓
+
+convert
+
+↓
+
+return
+
+Example:
+
+try {
+
+final response = await apiService.get(...);
+
+final data = FeatureModel.fromJson(...);
+
+return right(data);
+
+} catch (e) {
+
+return left(
+ServerFailure(e.toString()),
+);
+
+}
+
+Keep repository code obvious.
+
+---
+
+# 30. FIREBASE RESPONSIBILITIES
+
+Firebase remains responsible for:
+
+Authentication:
+
+* Login
+* Signup
+* Logout
+* Google Sign-In
+* User identity
+
+Firestore:
+
+* My Azkar
+* Prayer Tracker
+* Favorites
+* User-specific data
+
+Do NOT move general Quran/Azkar/Prayer data into Firestore.
+
+---
+
+# 31. CUSTOM BACKEND RESPONSIBILITIES
+
+The Custom Backend remains responsible for:
+
+* Quran
+* General Azkar
+* Prayer Times
+* Hijri Date
+
+Flutter communicates with it through:
+
+Dio
+
+Do NOT bypass the backend from Flutter using public APIs.
+
+---
+
+# 32. IMPORTANT DISTINCTIONS
+
+General Azkar:
+
+Backend data
+
+↓
+
+Azkar Feature
+
+My Azkar:
+
+User-specific data
+
+↓
+
+Firestore
+
+Prayer Times:
+
+Backend calculation/data
+
+Prayer Tracker:
+
+User-specific prayer completion data
+
+Settings:
+
+Local preferences
+
+↓
+
+SharedPreferences
+
+These responsibilities MUST remain separate.
+
+---
+
+# 33. DEVELOPMENT WORKFLOW FROM THIS POINT
+
+For every UI task:
 
 STEP 1:
-Inspect the existing project.
+
+Inspect the existing feature implementation.
 
 STEP 2:
-Inspect existing Core infrastructure.
+
+Inspect the existing Model.
 
 STEP 3:
-Inspect existing feature patterns.
+
+Inspect Cubit and State.
 
 STEP 4:
-Create the model.
+
+Inspect Repository.
 
 STEP 5:
-Create abstract Repository.
+
+Reuse existing data flow.
 
 STEP 6:
-Create RepositoryImpl.
+
+Inspect theme and existing widgets.
 
 STEP 7:
-Create Cubit and states.
+
+Build/reuse custom widgets where appropriate.
 
 STEP 8:
-Register dependencies in GetIt.
+
+Build the View.
 
 STEP 9:
-Create View.
+
+Connect the existing Cubit.
 
 STEP 10:
+
 Connect routing.
 
 STEP 11:
+
 Run:
 
 flutter analyze
 
 STEP 12:
+
 Run the application.
 
 STEP 13:
-Manually test the complete flow.
+
+Manually test the screen.
 
 STEP 14:
-Explain the architecture and code.
 
-Do NOT dump huge amounts of unexplained code.
+Only then move to the next screen.
 
-============================================================
-33. AI BEHAVIOR RULES
-============================================================
+---
 
-When asked to implement a feature:
+# 34. DO NOT DO
 
-1. Inspect existing files first.
-2. Do not assume file contents.
-3. Reuse existing infrastructure.
-4. Follow the established Settings coding pattern.
-5. Keep code simple.
-6. Preserve naming conventions.
-7. Preserve Repository + RepoImpl.
-8. Preserve Cubit.
-9. Preserve GetIt.
-10. Preserve Failure/Either.
-11. Preserve Dio/Firebase/SharedPreferences responsibilities.
+NEVER:
 
-If an existing project decision conflicts with a new request:
+* Restart the project
+* Rebuild completed features
+* Replace Firebase
+* Replace the Custom Backend
+* Put Dio in Views
+* Put Firebase in Views
+* Put Firestore in Views
+* Put SharedPreferences in Views
+* Put API URLs inside Cubits
+* Create unnecessary UseCases
+* Create unnecessary DTOs
+* Create unnecessary DataSources
+* Add Freezed
+* Add Equatable
+* Add code generation
+* Create a custom widget for every tiny element
+* Create enterprise abstractions
+* Rewrite working code unnecessarily
+* Refactor unrelated files
+* Change established architecture silently
+* Mix General Azkar with My Azkar
+* Mix Prayer Times with Prayer Tracker
 
-STOP.
+---
 
-Explain the conflict.
+# 35. TESTING REQUIREMENT
 
-Do NOT silently change the architecture.
+After every meaningful change:
 
-============================================================
-34. HOW TO HANDLE EXISTING CODE
-============================================================
+Run:
 
-Existing code is more authoritative than assumptions.
+flutter analyze
 
-Before modifying a file:
+The analyzer should remain clean.
 
-- Read it.
-- Understand it.
-- Identify the existing pattern.
-- Make the smallest necessary change.
+Then run the application and manually test the changed feature.
 
-Do NOT rewrite entire files if only a small change is required.
+Final testing should include:
 
-Do NOT introduce a new style if an established project style already exists.
+* Login
+* Signup
+* Google Sign-In
+* Logout
+* Quran list
+* Surah details
+* Azkar categories
+* Azkar details
+* Prayer Times
+* My Azkar
+* Prayer Tracker
+* Settings
+* Theme persistence
+* Language persistence
+* Font size persistence
+* Navigation
+* Firebase operations
+* Backend API operations
 
-============================================================
-35. PROFESSOR DISCUSSION PREPARATION
-============================================================
+---
 
-The team must be able to explain:
+# 36. GIT STATUS
 
-Why Feature-Based Architecture?
+The project has already reached the point where the major feature implementations have been completed.
 
-Why MVVM?
+Previous feature commits may exist.
 
-Why Cubit?
+From this checkpoint onward:
 
-Why Repository Pattern?
+UI changes should be committed incrementally.
 
-Why Repo and RepoImpl?
+Recommended commit style:
 
-Why does Cubit not call Dio?
+feat(ui): build home dashboard
 
-Why does Cubit not call Firebase?
+feat(ui): add shared custom widgets
 
-What is ApiService?
+feat(ui): improve quran screens
 
-What is Dio?
+feat(ui): build azkar screens
 
-What is Either?
+feat(ui): build prayer screens
 
-What is Failure?
+feat(ui): build my azkar screen
 
-How are exceptions converted into failures?
+feat(ui): build prayer tracker screen
 
-Why GetIt?
+feat(ui): finalize app navigation
 
-Why Firebase Authentication?
+Do NOT create one enormous unexplained commit containing unrelated changes.
 
-Why Firestore?
+---
 
-Why SharedPreferences?
+# 37. CURRENT PROJECT STATUS
 
-Why Custom Backend?
+## Architecture
 
-Why does the backend exist?
-
-Why is Firebase still required?
-
-Difference between:
-
-Azkar vs My Azkar
-
-Prayers vs Prayer Tracker
-
-How Quran data travels:
-
-Backend
-↓
-Dio
-↓
-Repository
-↓
-Cubit
-↓
-View
-
-How Settings travels:
-
-SharedPreferences
-↓
-Repository
-↓
-Cubit
-↓
-MaterialApp
-
-============================================================
-36. CURRENT CHECKPOINT
-============================================================
-
-THIS IS WHERE WE ARE NOW.
-
-Architecture:
 COMPLETE
 
-Core infrastructure:
+## Core Infrastructure
+
 COMPLETE
 
-GetIt:
-CONFIGURED
+## Dio
 
-Dio:
-CONFIGURED
-
-Firebase:
-CONFIGURED
-
-SharedPreferences:
-CONFIGURED
-
-Settings:
 COMPLETE
 
-Settings UI:
-WORKING
+## Custom Backend
 
-Theme integration:
-WORKING
+COMPLETE
 
-Language integration:
-WORKING
+## Firebase Authentication
 
-Font Size integration:
-WORKING
+IMPLEMENTED
 
-Persistence:
-WORKING
+## Google Sign-In
 
-TextStyle crash:
-FIXED
+IMPLEMENTED
 
-Flutter analyzer:
-Must remain clean after future changes.
+## Firestore
 
-Home:
-NOT IMPLEMENTED
+CONFIGURED AND IMPLEMENTED
 
-Auth:
-NOT IMPLEMENTED YET
+## SharedPreferences
 
-Quran:
-NOT IMPLEMENTED YET
+IMPLEMENTED
 
-Azkar:
-NOT IMPLEMENTED YET
+## GetIt
 
-Prayers:
-NOT IMPLEMENTED YET
+CONFIGURED
 
-My Azkar:
-NOT IMPLEMENTED YET
+## Settings
 
-Prayer Tracker:
-NOT IMPLEMENTED YET
+COMPLETE AND WORKING
 
-============================================================
-37. IMMEDIATE NEXT TASK
-============================================================
+## Quran
 
-The next major task is:
+FUNCTIONALLY IMPLEMENTED
 
-PHASE 3 — AUTH FEATURE
+## Azkar
 
-Before implementing Auth:
+FUNCTIONALLY IMPLEMENTED
 
-1. Inspect the current Auth folder.
-2. Inspect FirebaseAuthService.
-3. Inspect Failure/Exception classes.
-4. Inspect GetIt.
-5. Inspect routing.
-6. Inspect existing model conventions.
-7. Inspect the completed Settings feature.
-8. Use Settings as the internal coding-style reference.
+## Prayer Times
 
-Then implement Auth using:
+FUNCTIONALLY IMPLEMENTED
 
-AuthView
-↓
-AuthCubit
-↓
-AuthRepo
-↓
-AuthRepoImpl
-↓
-FirebaseAuthService
-↓
-Firebase Authentication
+## My Azkar
 
-Keep the implementation simple and consistent with the Settings implementation.
+FUNCTIONALLY IMPLEMENTED
 
-Do NOT implement Quran, Azkar, Prayers, My Azkar, Prayer Tracker, or Home yet unless explicitly requested.
+## Prayer Tracker
 
-============================================================
-38. FINAL INSTRUCTION
-============================================================
+FUNCTIONALLY IMPLEMENTED
 
-You are continuing an existing project.
+## Home
 
-Do NOT start from zero.
+FINAL UI NOT YET IMPLEMENTED
 
-Do NOT redesign the architecture.
+## Custom UI System
 
-Do NOT assume the old architecture is still valid.
-
-The CURRENT architecture is final:
-
-Feature-Based
-+
-MVVM
-+
-Cubit
-+
-Repository Pattern
-+
-Dio
-+
-Firebase
-+
-SharedPreferences
-+
-GetIt
-
-The CURRENT completed feature is:
-
-Settings
-
-The CURRENT next feature is:
-
-Auth
-
-Use the completed Settings feature as the primary reference for:
-
-- Internal coding style
-- Repository implementation style
-- Cubit style
-- State style
-- Error handling
-- GetIt registration
-- View simplicity
-
-Before writing code, inspect the actual project files and confirm the existing implementation.
-
-Priority:
-
-1. Correctness
-2. Consistency
-3. Simplicity
-4. Professor explainability
-5. Minimal changes
-6. No unnecessary complexity
-
-# CURRENT PROJECT STATUS
-
-## Islamic App — ملاذ
-
-The project follows the approved architecture and professor coding style defined in:
-
-AI_RULES/00_MASTER_RULES.md
-AI_RULES/01_ARCHITECTURE.md
-AI_RULES/02_PROFESSOR_CODING_STYLE.md
-AI_RULES/03_FEATURE_RULES.md
-AI_RULES/04_WORKFLOW.md
-
-DO NOT change the architecture unless explicitly approved by the user.
+CURRENT PHASE
 
 ---
 
-# AUTH FEATURE STATUS
+# 38. CURRENT CHECKPOINT
 
-Auth is currently implemented using:
+THIS IS THE MOST IMPORTANT SECTION.
 
-Firebase Authentication
-+
-Google Sign-In
-+
-Cubit
-+
-Repository Pattern
-+
-GetIt
+The project is NO LONGER in the "build features/backend" phase.
 
-## Current Auth Flow
+The major application features have already been implemented.
 
-Email Login:
+The project is now entering:
 
-LoginView
-↓
-LoginCubit
-↓
-AuthRepo
-↓
-AuthRepoImpl
-↓
-FirebaseAuthService
-↓
-Firebase Authentication
+# PHASE — FINAL UI & DESIGN
 
-Google Login:
+The immediate priorities are:
 
-LoginView
-↓
-LoginCubit
-↓
-AuthRepo
-↓
-AuthRepoImpl
-↓
-FirebaseAuthService
-↓
-Google Sign-In
-↓
-Firebase Authentication
+1. Inspect existing theme
+2. Build/review reusable Custom Widgets
+3. Build the final Home UI
+4. Integrate existing feature screens
+5. Improve Quran UI
+6. Improve Azkar UI
+7. Improve Prayer Times UI
+8. Improve My Azkar UI
+9. Improve Prayer Tracker UI
+10. Polish Auth UI
+11. Polish Settings UI
+12. Final navigation
+13. Loading/Error/Empty states
+14. RTL/Arabic review
+15. Full application testing
+16. flutter analyze
+17. Final Git cleanup
 
----
+IMPORTANT:
 
-# AUTH FILES
+The next task is NOT:
 
-## Model
+* Backend
+* API
+* Repository creation
+* Model creation
+* Firebase setup
+* New architecture
 
-lib/features/auth/data/models/user_model.dart
+The next task is:
 
-UserModel contains:
-
-- uid
-- name
-- email
-- photoUrl
-
-It includes:
-
-- constructor
-- copyWith()
-- fromJson()
-- toJson()
-
-No generated models.
+**UI DESIGN + CUSTOM REUSABLE WIDGETS**
 
 ---
 
-## Repository
+# 39. UI PHILOSOPHY
 
-lib/features/auth/data/repos/auth_repo.dart
+The UI should feel like one application.
 
-AuthRepo currently supports:
+Not:
 
-- login()
-- signup()
-- loginWithGoogle()
-- logout()
+Quran screen designed separately.
 
-All methods use:
+Azkar screen designed separately.
 
-Either<Failure, T>
+Prayer screen designed separately.
 
-from:
+Instead:
 
-package:dartz/dartz.dart
+All screens should share:
 
----
+* Colors
+* Typography
+* Border radius
+* Cards
+* Buttons
+* Spacing
+* Icons
+* Loading indicators
+* Error presentation
+* Navigation style
 
-## Repository Implementation
+The application should have a consistent visual identity for:
 
-lib/features/auth/data/repos/auth_repo_impl.dart
+**ملاذ**
 
-AuthRepoImpl depends on:
+The design should prioritize:
 
-FirebaseAuthService
+* Simplicity
+* Calm Islamic visual identity
+* Readability
+* Arabic RTL support
+* Modern mobile UI
+* Clean spacing
+* Easy navigation
 
-Responsibilities:
-
-- call FirebaseAuthService
-- convert Firebase User to UserModel
-- catch AuthException
-- return Failure through Either
-
-It must not access Firebase directly.
-
----
-
-## Firebase Service
-
-lib/core/services/firebase_auth_service.dart
-
-FirebaseAuthService currently supports:
-
-- getCurrentUser()
-- register()
-- login()
-- loginWithGoogle()
-- logout()
-
-Dependencies:
-
-- FirebaseAuth
-- GoogleSignIn
-
-Constructor injection is supported:
-
-FirebaseAuthService({
-  FirebaseAuth? firebaseAuth,
-  GoogleSignIn? googleSignIn,
-})
-
-Do not create another Firebase authentication service.
+Do not sacrifice explainability for visual complexity.
 
 ---
 
-# LOGIN CUBIT
+# 40. FINAL GOLDEN RULE
 
-lib/features/auth/presentation/manager/login_cubit.dart
+The project is now in the UI phase.
 
-LoginCubit depends on:
+Therefore:
 
-AuthRepo
+> **Do not build what already exists. Improve and integrate what already exists.**
 
-Current operations:
+And:
 
-- login()
-- loginWithGoogle()
+> **Build the simplest clean UI that makes the existing architecture look complete.**
 
-Both operations emit:
+The architecture is established.
 
-LoginLoading
-LoginSuccess
-LoginFailure
+The features are implemented.
 
-Do not create separate Google-specific states unless explicitly required.
+The next job is to make the application feel like a finished product.
 
----
-
-# LOGIN STATES
-
-login_state.dart uses:
-
-sealed class LoginState
-
-States:
-
-- LoginInitial
-- LoginLoading
-- LoginSuccess
-- LoginFailure
-
-No Equatable.
-No Freezed.
-No generated states.
-
----
-
-# SIGNUP CUBIT
-
-SignupCubit depends on:
-
-AuthRepo
-
-Current operation:
-
-- signup()
-
-States:
-
-- SignupInitial
-- SignupLoading
-- SignupSuccess
-- SignupFailure
-
----
-
-# AUTH UI
-
-LoginView supports:
-
-- Email login
-- Password login
-- Google Sign-In
-- Navigation to Signup
-
-SignupView supports:
-
-- Name
-- Email
-- Password
-- Account creation
-- Navigation to Home after successful signup
-
-Views must remain thin.
-
-Views must never access:
-
-- FirebaseAuth
-- GoogleSignIn
-- Firestore
-- Dio
-- ApiConsumer
-- SharedPreferences
-
----
-
-# GOOGLE SIGN-IN STATUS
-
-Google Sign-In has been implemented in:
-
-FirebaseAuthService
-↓
-AuthRepoImpl
-↓
-LoginCubit
-↓
-LoginView
-
-The Google dependency is already included in pubspec.yaml:
-
-google_sign_in
-
-The code has been implemented and integrated.
-
-Before declaring Google Sign-In fully verified, test it on the actual Android target/device.
-
-flutter analyze confirms code analysis only.
-It does NOT prove that Firebase/Google Android configuration is working at runtime.
-
----
-
-# ERROR HANDLING
-
-Existing errors:
-
-core/errors/exceptions.dart
-
-- ServerException
-- AuthException
-- FirestoreException
-- CacheException
-
-Existing failures:
-
-core/errors/failures.dart
-
-- ServerFailure
-- FirebaseAuthFailure
-- FirebaseFirestoreFailure
-- CacheFailure
-
-Auth exceptions are converted to:
-
-FirebaseAuthFailure
-
-Do not create duplicate Failure classes.
-
----
-
-# IMPORTANT CURRENT STATUS
-
-The project currently has:
-
-- Email Login implemented
-- Email Signup implemented
-- Logout implemented
-- Google Sign-In implemented
-- Auth Repository implemented
-- FirebaseAuthService implemented
-- LoginCubit implemented
-- SignupCubit implemented
-- LoginView implemented
-- SignupView implemented
-
-The latest implementation passed flutter analyze except for informational lints caused mainly by debug print statements and prefer_const_constructors.
-
-Debug print statements should be removed before final cleanup.
-
----
-
-# NEXT STEP
-
-Do not rewrite Auth.
-
-Do not refactor Auth unnecessarily.
-
-The next task should continue incrementally from the existing project.
-
-Preferred feature order:
-
-Quran
-↓
-Prayers
-↓
-Azkar
-↓
-Auth
-↓
-My Azkar
-↓
-Prayer Tracker
-↓
-Settings
-↓
-Home Integration
-
-Auth is already substantially implemented.
-
-Do not proceed with unrelated work.
-
-END OF MASTER CONTEXT
+# END OF CURRENT MASTER CONTEXT

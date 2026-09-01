@@ -11,6 +11,8 @@ import '../../features/settings/presentation/manager/settings_cubit.dart';
 import '../../features/settings/presentation/views/settings_view.dart';
 import '../../core/di/service_locator.dart';
 import 'routes_name.dart';
+import '../../features/my_azkar/presentation/manager/my_azkar_cubit.dart';
+import '../../features/my_azkar/presentation/views/my_azkar_view.dart';
 import '../../features/prayers/presentation/manager/prayers_cubit.dart';
 import '../../features/prayers/presentation/views/prayers_view.dart';
 import '../../features/azkar/presentation/manager/azkar_cubit.dart';
@@ -80,6 +82,14 @@ class AppRoutes {
         );
 
       case RoutesName.myAzkar:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<MyAzkarCubit>(),
+            child: const MyAzkarView(),
+          ),
+          settings: settings,
+        );
+
       case RoutesName.prayerTracker:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -191,6 +201,19 @@ class TemporaryHomeSettingsTestView extends StatelessWidget {
                   );
                 },
                 child: const Text('Open Prayer Tracker'),
+              ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    RoutesName.myAzkar,
+                  );
+                },
+                child: const Text('Open My Azkar'),
               ),
             ),
           ],

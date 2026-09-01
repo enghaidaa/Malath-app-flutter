@@ -15,10 +15,7 @@ class FirebaseFirestoreService {
   }) async {
     try {
       if (documentId != null) {
-        await _firestore
-            .collection(collectionPath)
-            .doc(documentId)
-            .set(data);
+        await _firestore.collection(collectionPath).doc(documentId).set(data);
       } else {
         await _firestore.collection(collectionPath).add(data);
       }
@@ -49,16 +46,35 @@ class FirebaseFirestoreService {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getCollectionData({
+    required String collectionPath,
+  }) async {
+    try {
+      final snapshot = await _firestore.collection(collectionPath).get();
+
+      return snapshot.docs
+          .map(
+            (document) => document.data(),
+          )
+          .toList();
+    } on FirebaseException catch (error) {
+      throw FirestoreException(
+        error.message ?? 'Failed to get collection data',
+      );
+    } catch (_) {
+      throw FirestoreException(
+        'Failed to get collection data',
+      );
+    }
+  }
+
   Future<void> updateData({
     required String collectionPath,
     required String documentId,
     required Map<String, dynamic> data,
   }) async {
     try {
-      await _firestore
-          .collection(collectionPath)
-          .doc(documentId)
-          .update(data);
+      await _firestore.collection(collectionPath).doc(documentId).update(data);
     } on FirebaseException catch (error) {
       throw FirestoreException(error.message ?? 'Failed to update data');
     } catch (_) {

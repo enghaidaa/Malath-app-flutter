@@ -2,6 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../features/my_azkar/data/repos/my_azkar_repo.dart';
+import '../../features/my_azkar/data/repos/my_azkar_repo_impl.dart';
+import '../../features/my_azkar/presentation/manager/my_azkar_cubit.dart';
 import '../../features/prayers/data/repos/prayers_repo.dart';
 import '../../features/prayers/data/repos/prayers_repo_impl.dart';
 import '../../features/prayers/presentation/manager/prayers_cubit.dart';
@@ -85,6 +88,21 @@ Future<void> setupServiceLocator() async {
   sl.registerFactory<QuranCubit>(
     () => QuranCubit(
       sl<QuranRepo>(),
+    ),
+  );
+
+// My Azkar Repository
+  sl.registerLazySingleton<MyAzkarRepo>(
+    () => MyAzkarRepoImpl(
+      firestoreService: sl<FirebaseFirestoreService>(),
+      authService: sl<FirebaseAuthService>(),
+    ),
+  );
+
+// My Azkar Cubit
+  sl.registerFactory<MyAzkarCubit>(
+    () => MyAzkarCubit(
+      sl<MyAzkarRepo>(),
     ),
   );
 
