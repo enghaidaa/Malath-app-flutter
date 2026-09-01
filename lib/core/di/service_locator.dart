@@ -2,6 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../features/prayers/data/repos/prayers_repo.dart';
+import '../../features/prayers/data/repos/prayers_repo_impl.dart';
+import '../../features/prayers/presentation/manager/prayers_cubit.dart';
 import '../../features/azkar/data/repos/azkar_repo.dart';
 import '../../features/azkar/data/repos/azkar_repo_impl.dart';
 import '../../features/azkar/presentation/manager/azkar_cubit.dart';
@@ -21,6 +24,9 @@ import '../api/end_points.dart';
 import '../services/api_service.dart';
 import '../services/firebase_auth_service.dart';
 import '../services/firebase_firestore_service.dart';
+import '../../features/prayer_tracker/data/repos/prayer_tracker_repo.dart';
+import '../../features/prayer_tracker/data/repos/prayer_tracker_repo_impl.dart';
+import '../../features/prayer_tracker/presentation/manager/prayer_tracker_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -82,6 +88,20 @@ Future<void> setupServiceLocator() async {
     ),
   );
 
+// Prayer Tracker Repository
+  sl.registerLazySingleton<PrayerTrackerRepo>(
+    () => PrayerTrackerRepoImpl(
+      sharedPreferences: sl<SharedPreferences>(),
+    ),
+  );
+
+// Prayer Tracker Cubit
+  sl.registerFactory<PrayerTrackerCubit>(
+    () => PrayerTrackerCubit(
+      sl<PrayerTrackerRepo>(),
+    ),
+  );
+
   // Azkar Repository
 
   sl.registerLazySingleton<AzkarRepo>(
@@ -102,6 +122,19 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton<AuthRepo>(
     () => AuthRepoImpl(
       firebaseAuthService: sl<FirebaseAuthService>(),
+    ),
+  );
+  // Prayer Repository
+  sl.registerLazySingleton<PrayerRepo>(
+    () => PrayerRepoImpl(
+      apiService: sl<ApiService>(),
+    ),
+  );
+
+// Prayer Cubit
+  sl.registerFactory<PrayerCubit>(
+    () => PrayerCubit(
+      sl<PrayerRepo>(),
     ),
   );
 

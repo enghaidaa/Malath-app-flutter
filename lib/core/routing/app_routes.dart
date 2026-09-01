@@ -11,9 +11,12 @@ import '../../features/settings/presentation/manager/settings_cubit.dart';
 import '../../features/settings/presentation/views/settings_view.dart';
 import '../../core/di/service_locator.dart';
 import 'routes_name.dart';
-
+import '../../features/prayers/presentation/manager/prayers_cubit.dart';
+import '../../features/prayers/presentation/views/prayers_view.dart';
 import '../../features/azkar/presentation/manager/azkar_cubit.dart';
 import '../../features/azkar/presentation/views/azkar_view.dart';
+import '../../features/prayer_tracker/presentation/manager/prayer_tracker_cubit.dart';
+import '../../features/prayer_tracker/presentation/views/prayer_tracker_view.dart';
 
 class AppRoutes {
   static const String initialRoute = RoutesName.login;
@@ -68,11 +71,20 @@ class AppRoutes {
         );
 
       case RoutesName.prayers:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<PrayerCubit>(),
+            child: const PrayersView(),
+          ),
+          settings: settings,
+        );
+
       case RoutesName.myAzkar:
       case RoutesName.prayerTracker:
         return MaterialPageRoute(
-          builder: (_) => _PlaceholderView(
-            routeName: settings.name!,
+          builder: (_) => BlocProvider(
+            create: (_) => sl<PrayerTrackerCubit>(),
+            child: const PrayerTrackerView(),
           ),
           settings: settings,
         );
@@ -153,6 +165,32 @@ class TemporaryHomeSettingsTestView extends StatelessWidget {
                   );
                 },
                 child: const Text('Open Settings'),
+              ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    RoutesName.prayers,
+                  );
+                },
+                child: const Text('Open Prayers'),
+              ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    RoutesName.prayerTracker,
+                  );
+                },
+                child: const Text('Open Prayer Tracker'),
               ),
             ),
           ],
