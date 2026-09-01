@@ -1,5 +1,5 @@
 class EndPoints {
-  static const String baseUrl = 'http://10.0.2.2:3000';
+  static const String baseUrl = 'https://islamic-app-backend.vercel.app';
 
   static const String health = '/health';
 

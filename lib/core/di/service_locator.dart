@@ -2,6 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../features/azkar/data/repos/azkar_repo.dart';
+import '../../features/azkar/data/repos/azkar_repo_impl.dart';
+import '../../features/azkar/presentation/manager/azkar_cubit.dart';
+import '../../features/quran/data/repos/quran_repo.dart';
+import '../../features/quran/data/repos/quran_repo_impl.dart';
+import '../../features/quran/presentation/manager/quran_cubit.dart';
 import '../../features/auth/data/repos/auth_repo.dart';
 import '../../features/auth/data/repos/auth_repo_impl.dart';
 import '../../features/auth/presentation/manager/login_cubit.dart';
@@ -61,6 +67,35 @@ Future<void> setupServiceLocator() async {
 
   sl.registerLazySingleton<FirebaseFirestoreService>(
     () => FirebaseFirestoreService(),
+  );
+  // Quran Repository
+  sl.registerLazySingleton<QuranRepo>(
+    () => QuranRepoImpl(
+      apiService: sl<ApiService>(),
+    ),
+  );
+
+// Quran Cubit
+  sl.registerFactory<QuranCubit>(
+    () => QuranCubit(
+      sl<QuranRepo>(),
+    ),
+  );
+
+  // Azkar Repository
+
+  sl.registerLazySingleton<AzkarRepo>(
+    () => AzkarRepoImpl(
+      apiService: sl<ApiService>(),
+    ),
+  );
+
+  // Azkar Cubit
+
+  sl.registerFactory<AzkarCubit>(
+    () => AzkarCubit(
+      sl<AzkarRepo>(),
+    ),
   );
 
   // Auth Repository

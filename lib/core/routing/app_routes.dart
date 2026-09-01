@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import '../../features/quran/presentation/manager/quran_cubit.dart';
+import '../../features/quran/presentation/views/quran_view.dart';
+import '../../features/quran/presentation/views/surah_details_view.dart';
 import '../../features/auth/presentation/manager/login_cubit.dart';
 import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/auth/presentation/manager/signup_cubit.dart';
@@ -9,6 +11,9 @@ import '../../features/settings/presentation/manager/settings_cubit.dart';
 import '../../features/settings/presentation/views/settings_view.dart';
 import '../../core/di/service_locator.dart';
 import 'routes_name.dart';
+
+import '../../features/azkar/presentation/manager/azkar_cubit.dart';
+import '../../features/azkar/presentation/views/azkar_view.dart';
 
 class AppRoutes {
   static const String initialRoute = RoutesName.login;
@@ -33,8 +38,35 @@ class AppRoutes {
           settings: settings,
         );
       case RoutesName.quran:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<QuranCubit>(),
+            child: const QuranView(),
+          ),
+          settings: settings,
+        );
+
       case RoutesName.surahDetails:
+        final surahId = settings.arguments as int;
+
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<QuranCubit>(),
+            child: SurahDetailsView(
+              surahId: surahId,
+            ),
+          ),
+          settings: settings,
+        );
       case RoutesName.azkar:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<AzkarCubit>(),
+            child: const AzkarView(),
+          ),
+          settings: settings,
+        );
+
       case RoutesName.prayers:
       case RoutesName.myAzkar:
       case RoutesName.prayerTracker:
@@ -78,17 +110,52 @@ class TemporaryHomeSettingsTestView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ملاذ — Settings Test'),
+        title: const Text('ملاذ — Feature Test'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(
-              context,
-              RoutesName.settings,
-            );
-          },
-          child: const Text('Open Settings'),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    RoutesName.quran,
+                  );
+                },
+                child: const Text('Open Quran'),
+              ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    RoutesName.azkar,
+                  );
+                },
+                child: const Text('Open Azkar'),
+              ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    RoutesName.settings,
+                  );
+                },
+                child: const Text('Open Settings'),
+              ),
+            ),
+          ],
         ),
       ),
     );
