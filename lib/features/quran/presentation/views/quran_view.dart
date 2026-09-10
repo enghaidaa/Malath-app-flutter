@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/routing/routes_name.dart';
+import '../../../../core/widgets/app_bottom_nav_bar.dart';
 import '../manager/quran_cubit.dart';
 
 class QuranView extends StatefulWidget {
@@ -11,6 +13,8 @@ class QuranView extends StatefulWidget {
 }
 
 class _QuranViewState extends State<QuranView> {
+  static const int currentIndex = 1;
+
   @override
   void initState() {
     super.initState();
@@ -18,11 +22,48 @@ class _QuranViewState extends State<QuranView> {
     context.read<QuranCubit>().getSurahs();
   }
 
+  void _onBottomNavTap(BuildContext context, int index) {
+    if (index == currentIndex) return;
+
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(
+          context,
+          RoutesName.home,
+        );
+        break;
+
+      case 1:
+        break;
+
+      case 2:
+        Navigator.pushReplacementNamed(
+          context,
+          RoutesName.myAzkar,
+        );
+        break;
+
+      case 3:
+        Navigator.pushReplacementNamed(
+          context,
+          RoutesName.prayerTracker,
+        );
+        break;
+
+      case 4:
+        Navigator.pushReplacementNamed(
+          context,
+          RoutesName.settings,
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quran'),
+        title: Text('quran.title'.tr()),
       ),
       body: BlocBuilder<QuranCubit, QuranState>(
         builder: (context, state) {
@@ -43,12 +84,15 @@ class _QuranViewState extends State<QuranView> {
 
           if (state is QuranLoaded) {
             if (state.surahs.isEmpty) {
-              return const Center(
-                child: Text('No Surahs available'),
+              return Center(
+                child: Text('quran.no_surahs'.tr()),
               );
             }
 
             return ListView.builder(
+              padding: const EdgeInsets.symmetric(
+                vertical: 8,
+              ),
               itemCount: state.surahs.length,
               itemBuilder: (context, index) {
                 final surah = state.surahs[index];
@@ -61,13 +105,13 @@ class _QuranViewState extends State<QuranView> {
                   ),
                   title: Text(
                     surah.name,
-                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.right,
                   ),
                   subtitle: Text(
                     surah.englishName,
                   ),
                   trailing: Text(
-                    '${surah.numberOfAyahs} Ayahs',
+                    '${surah.numberOfAyahs} ${'quran.ayah_suffix'.tr()}',
                   ),
                   onTap: () {
                     Navigator.pushNamed(
@@ -82,6 +126,43 @@ class _QuranViewState extends State<QuranView> {
           }
 
           return const SizedBox();
+        },
+      ),
+      bottomNavigationBar: AppBottomNavBar(
+        currentIndex: 1,
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacementNamed(
+                context,
+                RoutesName.home,
+              );
+              break;
+
+            case 1:
+              break;
+
+            case 2:
+              Navigator.pushReplacementNamed(
+                context,
+                RoutesName.settings,
+              );
+              break;
+
+            case 3:
+              Navigator.pushReplacementNamed(
+                context,
+                RoutesName.prayerTracker,
+              );
+              break;
+
+            case 4:
+              Navigator.pushReplacementNamed(
+                context,
+                RoutesName.myAzkar,
+              );
+              break;
+          }
         },
       ),
     );

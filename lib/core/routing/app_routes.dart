@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_poject_final/features/home/presentation/views/home_view.dart';
 import '../../features/quran/presentation/manager/quran_cubit.dart';
 import '../../features/quran/presentation/views/quran_view.dart';
 import '../../features/quran/presentation/views/surah_details_view.dart';
@@ -101,7 +102,7 @@ class AppRoutes {
 
       case RoutesName.home:
         return MaterialPageRoute(
-          builder: (_) => const TemporaryHomeSettingsTestView(),
+          builder: (_) => const HomeView(),
           settings: settings,
         );
 
@@ -122,104 +123,6 @@ class AppRoutes {
           settings: settings,
         );
     }
-  }
-}
-
-class TemporaryHomeSettingsTestView extends StatelessWidget {
-  const TemporaryHomeSettingsTestView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('ملاذ — Feature Test'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    RoutesName.quran,
-                  );
-                },
-                child: const Text('Open Quran'),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    RoutesName.azkar,
-                  );
-                },
-                child: const Text('Open Azkar'),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    RoutesName.settings,
-                  );
-                },
-                child: const Text('Open Settings'),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    RoutesName.prayers,
-                  );
-                },
-                child: const Text('Open Prayers'),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    RoutesName.prayerTracker,
-                  );
-                },
-                child: const Text('Open Prayer Tracker'),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    RoutesName.myAzkar,
-                  );
-                },
-                child: const Text('Open My Azkar'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
 

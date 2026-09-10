@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_poject_final/core/routing/routes_name.dart';
@@ -42,7 +43,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: Text('login_view.app_bar_title'.tr()),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -50,8 +51,8 @@ class _LoginViewState extends State<LoginView> {
           listener: (context, state) {
             if (state is LoginSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Login successful'),
+                SnackBar(
+                  content: Text('login_view.success_message'.tr()),
                 ),
               );
 
@@ -78,8 +79,8 @@ class _LoginViewState extends State<LoginView> {
                 TextField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
+                  decoration: InputDecoration(
+                    labelText: 'login_view.email_label'.tr(),
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -87,8 +88,8 @@ class _LoginViewState extends State<LoginView> {
                 TextField(
                   controller: passwordController,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
+                  decoration: InputDecoration(
+                    labelText: 'login_view.password_label'.tr(),
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -99,7 +100,7 @@ class _LoginViewState extends State<LoginView> {
                     onPressed: isLoading ? null : login,
                     child: isLoading
                         ? const CircularProgressIndicator()
-                        : const Text('Login'),
+                        : Text('login_view.login_button'.tr()),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -112,7 +113,7 @@ class _LoginViewState extends State<LoginView> {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12,
                       ),
-                      child: const Text('OR'),
+                      child: Text('login_view.or_divider'.tr()),
                     ),
                     const Expanded(
                       child: Divider(),
@@ -125,14 +126,14 @@ class _LoginViewState extends State<LoginView> {
                   child: OutlinedButton.icon(
                     onPressed: isLoading ? null : loginWithGoogle,
                     icon: const Icon(Icons.g_mobiledata),
-                    label: const Text('Continue with Google'),
+                    label: Text('login_view.google_button'.tr()),
                   ),
                 ),
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Don't have an account?"),
+                    Text('login_view.no_account_text'.tr()),
                     TextButton(
                       onPressed: isLoading
                           ? null
@@ -142,7 +143,7 @@ class _LoginViewState extends State<LoginView> {
                                 RoutesName.signup,
                               );
                             },
-                      child: const Text('Sign Up'),
+                      child: Text('login_view.sign_up_button'.tr()),
                     ),
                   ],
                 ),

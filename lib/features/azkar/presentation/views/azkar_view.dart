@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,7 +15,6 @@ class _AzkarViewState extends State<AzkarView> {
   @override
   void initState() {
     super.initState();
-
     context.read<AzkarCubit>().getAzkar();
   }
 
@@ -22,29 +22,45 @@ class _AzkarViewState extends State<AzkarView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Azkar'),
+        title: Text(
+          'azkar_view.app_bar_title'.tr(),
+        ),
       ),
       body: BlocBuilder<AzkarCubit, AzkarState>(
         builder: (context, state) {
+          // =========================
+          // Loading
+          // =========================
           if (state is AzkarLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
 
+          // =========================
+          // Failure
+          // =========================
           if (state is AzkarFailure) {
             return Center(
-              child: Text(
-                state.errorMessage,
-                textAlign: TextAlign.center,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  state.errorMessage,
+                  textAlign: TextAlign.center,
+                ),
               ),
             );
           }
 
+          // =========================
+          // All Azkar Categories
+          // =========================
           if (state is AzkarLoaded) {
             if (state.azkar.isEmpty) {
-              return const Center(
-                child: Text('No Azkar available'),
+              return Center(
+                child: Text(
+                  'azkar_view.empty_state'.tr(),
+                ),
               );
             }
 
@@ -63,7 +79,8 @@ class _AzkarViewState extends State<AzkarView> {
                     azkar.category,
                   ),
                   subtitle: Text(
-                    '${azkar.items.length} Azkar',
+                    '${azkar.items.length} '
+                    '${'azkar_view.azkar_count'.tr()}',
                   ),
                   onTap: () {
                     context.read<AzkarCubit>().getAzkarByCategory(
@@ -75,6 +92,9 @@ class _AzkarViewState extends State<AzkarView> {
             );
           }
 
+          // =========================
+          // Azkar By Category
+          // =========================
           if (state is AzkarCategoryLoaded) {
             final azkar = state.azkar;
 
@@ -100,20 +120,36 @@ class _AzkarViewState extends State<AzkarView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          // =========================
+                          // Zekr Text
+                          // =========================
                           Text(
                             item.text,
-                            textDirection: TextDirection.rtl,
                             textAlign: TextAlign.right,
                             style: const TextStyle(
                               fontSize: 22,
                               height: 2,
                             ),
                           ),
+
                           const SizedBox(height: 12),
+
+                          // =========================
+                          // Repetitions
+                          // =========================
                           Text(
-                            'Repetitions: ${item.repetitions}',
+                            'azkar_view.repetitions_label'.tr(
+                              namedArgs: {
+                                'count': '${item.repetitions}',
+                              },
+                            ),
                           ),
+
                           const SizedBox(height: 8),
+
+                          // =========================
+                          // Reference
+                          // =========================
                           Text(
                             item.reference,
                           ),

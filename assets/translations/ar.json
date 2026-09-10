@@ -1,0 +1,120 @@
+{
+    "app": {
+      "title": "ملاذ"
+    },
+    "settings": {
+      "title": "الإعدادات",
+      "error_title": "حدث خطأ",
+      "retry": "إعادة المحاولة",
+      "appearance": "المظهر",
+      "dark_mode": "الوضع الداكن",
+      "dark_active": "الوضع الداكن مفعّل",
+      "light_active": "الوضع الفاتح مفعّل",
+      "language": "اللغة",
+      "app_language": "لغة التطبيق",
+      "arabic": "العربية",
+      "english": "English",
+      "font_size": "حجم الخط",
+      "about_app": "عن التطبيق",
+      "app_name": "ملاذ",
+      "app_description": "رفيقك للذكر والقرآن والصلاة"
+    },
+    "quran": {
+      "title": "القرآن الكريم",
+      "no_surahs": "لا توجد سور متاحة",
+      "ayah_suffix": "آية"
+    },
+    "surah_details": {
+      "title": "السورة",
+      "ayah_number": "آية"
+    },
+    "prayers_view": {
+      "app_bar_title": "مواقيت الصلاة",
+      "today_timings": "مواقيت اليوم",
+      "hijri_date": "التاريخ الهجري",
+      "retry_button": "إعادة المحاولة",
+      "fajr": "الفجر",
+      "sunrise": "الشروق",
+      "dhuhr": "الظهر",
+      "asr": "العصر",
+      "maghrib": "المغرب",
+      "isha": "العشاء"
+    },
+    "prayer_tracker_view": {
+      "app_bar_title": "متتبع الصلاة",
+      "header_title": "متتبع الصلاة",
+      "header_subtitle": "تابع صلواتك وحافظ على صلاتك اليومية",
+      "today_date": "تاريخ اليوم",
+      "today_progress": "إنجاز اليوم",
+      "completed_all_prayers": "ما شاء الله، أتممت جميع الصلوات 🌸",
+      "keep_going": "استمر، أنت تقوم بعمل رائع",
+      "today_prayers": "صلوات اليوم",
+      "fajr": "الفجر",
+      "dhuhr": "الظهر",
+      "asr": "العصر",
+      "maghrib": "المغرب",
+      "isha": "العشاء",
+      "prayed_status": "تمت الصلاة ✓",
+      "not_prayed_status": "لم تُصلَّ بعد"
+    },
+    "my_azkar_view": {
+      "app_bar_title": "أذكاري",
+      "empty_azkar": "لا توجد أذكار محفوظة",
+      "repetitions_label": "عدد التكرار: {count}"
+    },
+    "home_view": {
+      "greeting": "السلام عليكم 🌸",
+      "welcome_message": "أهلاً بك في ملاذ",
+      "hijri_date_title": "التاريخ الهجري",
+      "hijri_date_fallback": "—",
+      "hijri_year_suffix": "1448 هـ",
+      "next_prayer_title": "الصلاة القادمة",
+      "next_prayer_fallback": "—",
+      "next_prayer_subtitle": "قريبًا",
+      "quran_verse_quote": "ألا بذكر الله تطمئن القلوب",
+      "services_title": "خدمات ملاذ",
+      "service_quran": "القرآن الكريم",
+      "service_azkar": "الأذكار",
+      "service_my_azkar": "أذكاري",
+      "service_prayer_times": "مواقيت الصلاة"
+    },
+    "azkar_view": {
+      "app_bar_title": "الأذكار",
+      "empty_state": "لا توجد أذكار متاحة",
+      "repetitions_label": "عدد التكرار: {count}",
+      "azkar_count": "ذكر"
+    },
+    "login_view": {
+      "app_bar_title": "تسجيل الدخول",
+      "email_label": "البريد الإلكتروني",
+      "password_label": "كلمة المرور",
+      "login_button": "تسجيل الدخول",
+      "or_divider": "أو",
+      "google_button": "المتابعة باستخدام جوجل",
+      "no_account_text": "ليس لديك حساب؟",
+      "sign_up_button": "إنشاء حساب",
+      "success_message": "تم تسجيل الدخول بنجاح"
+    },
+    "bottom_nav": {
+      "home": "الرئيسية",
+      "quran": "القرآن",
+      "settings": "الإعدادات",
+      "prayer_tracker": "متتبع الصلاة",
+      "azkar": "أذكاري"
+    },
+    "signup_view": {
+      "app_bar_title": "إنشاء حساب",
+      "title": "إنشاء حساب",
+      "full_name_label": "الاسم الكامل",
+      "email_label": "البريد الإلكتروني",
+      "password_label": "كلمة المرور",
+      "signup_button": "إنشاء حساب",
+      "have_account": "لديك حساب بالفعل؟",
+      "login_button": "تسجيل الدخول",
+      "enter_name": "يرجى إدخال اسمك",
+      "enter_email": "يرجى إدخال بريدك الإلكتروني",
+      "enter_password": "يرجى إدخال كلمة المرور",
+      "password_min": "يجب أن تكون كلمة المرور 6 أحرف على الأقل"
+    }
+  }
+  

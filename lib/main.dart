@@ -1,7 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/di/service_locator.dart';
 import 'core/routing/app_routes.dart';
@@ -12,6 +12,9 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // تهيئة مكتبة الترجمة
+  await EasyLocalization.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -19,9 +22,18 @@ Future<void> main() async {
   await setupServiceLocator();
 
   runApp(
-    BlocProvider(
-      create: (_) => sl<SettingsCubit>()..loadSettings(),
-      child: const MyApp(),
+    EasyLocalization(
+      supportedLocales: const [
+        Locale('ar'),
+        Locale('en'),
+      ],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('ar'),
+      startLocale: const Locale('ar'),
+      child: BlocProvider(
+        create: (_) => sl<SettingsCubit>()..loadSettings(),
+        child: const MyApp(),
+      ),
     ),
   );
 }
@@ -36,18 +48,11 @@ class MyApp extends StatelessWidget {
         final bool isDarkMode =
             state is SettingsLoaded ? state.settings.isDarkMode : false;
 
-        final String languageCode =
-            state is SettingsLoaded ? state.settings.languageCode : 'en';
-
         final double fontSize =
             state is SettingsLoaded ? state.settings.fontSize : 18.0;
 
-        final Locale locale = const ['en', 'ar'].contains(languageCode)
-            ? Locale(languageCode)
-            : const Locale('en');
-
         return MaterialApp(
-          title: 'ملاذ',
+          title: 'app.title'.tr(),
           debugShowCheckedModeBanner: false,
           theme: AppTheme.buildTheme(
             isDark: false,
@@ -58,16 +63,12 @@ class MyApp extends StatelessWidget {
             fontSize: fontSize,
           ),
           themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
-          locale: locale,
-          supportedLocales: const [
-            Locale('en'),
-            Locale('ar'),
-          ],
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
+
+          // إعدادات الـ EasyLocalization للغة
+          locale: context.locale,
+          supportedLocales: context.supportedLocales,
+          localizationsDelegates: context.localizationDelegates,
+
           initialRoute: AppRoutes.initialRoute,
           onGenerateRoute: AppRoutes.onGenerateRoute,
         );

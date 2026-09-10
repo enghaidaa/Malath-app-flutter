@@ -32,7 +32,7 @@ class AppStyles {
   static const TextStyle buttonText = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w600,
-    color: Colors.white,
+    color: AppColors.textPrimary,
   );
 
   static const TextStyle labelText = TextStyle(

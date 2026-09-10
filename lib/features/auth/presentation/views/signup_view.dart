@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,7 +41,7 @@ class _SignupViewState extends State<SignupView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Account'),
+        title: Text('signup_view.app_bar_title'.tr()),
       ),
       body: BlocConsumer<SignupCubit, SignupState>(
         listener: (context, state) {
@@ -70,8 +71,8 @@ class _SignupViewState extends State<SignupView> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 30),
-                  const Text(
-                    'Create Account',
+                  Text(
+                    'signup_view.title'.tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 28,
@@ -81,13 +82,13 @@ class _SignupViewState extends State<SignupView> {
                   const SizedBox(height: 30),
                   TextFormField(
                     controller: nameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Full Name',
+                    decoration: InputDecoration(
+                      labelText: 'signup_view.full_name_label'.tr(),
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Please enter your name';
+                        return 'signup_view.enter_name'.tr();
                       }
                       return null;
                     },
@@ -96,13 +97,13 @@ class _SignupViewState extends State<SignupView> {
                   TextFormField(
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
+                    decoration: InputDecoration(
+                      labelText: 'signup_view.email_label'.tr(),
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Please enter your email';
+                        return 'signup_view.enter_email'.tr();
                       }
                       return null;
                     },
@@ -111,17 +112,17 @@ class _SignupViewState extends State<SignupView> {
                   TextFormField(
                     controller: passwordController,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
+                    decoration: InputDecoration(
+                      labelText: 'signup_view.password_label'.tr(),
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
+                        return 'signup_view.enter_password'.tr();
                       }
 
                       if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
+                        return 'signup_view.password_min'.tr();
                       }
 
                       return null;
@@ -132,18 +133,18 @@ class _SignupViewState extends State<SignupView> {
                     onPressed: isLoading ? null : signup,
                     child: isLoading
                         ? const CircularProgressIndicator()
-                        : const Text('Create Account'),
+                        : Text('signup_view.signup_button'.tr()),
                   ),
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Already have an account?'),
+                      Text('signup_view.have_account'.tr()),
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text('Login'),
+                        child: Text('signup_view.login_button'.tr()),
                       ),
                     ],
                   ),

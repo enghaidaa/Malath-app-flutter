@@ -11,59 +11,145 @@ class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit(this.settingsRepo) : super(SettingsInitial());
 
   Future<void> loadSettings() async {
+    if (isClosed) return;
+
     emit(SettingsLoading());
+
     final result = await settingsRepo.getSettings();
+
+    if (isClosed) return;
+
     result.fold(
-      (failure) => emit(SettingsFailure(errorMessage: failure.message)),
-      (settings) => emit(SettingsLoaded(settings: settings)),
+      (failure) {
+        if (isClosed) return;
+
+        emit(
+          SettingsFailure(
+            errorMessage: failure.message,
+          ),
+        );
+      },
+      (settings) {
+        if (isClosed) return;
+
+        emit(
+          SettingsLoaded(
+            settings: settings,
+          ),
+        );
+      },
     );
   }
 
   Future<void> toggleTheme() async {
-    if (state is SettingsLoaded) {
-      final currentSettings = (state as SettingsLoaded).settings;
-      final newTheme = !currentSettings.isDarkMode;
+    if (isClosed) return;
 
-      final result = await settingsRepo.saveTheme(newTheme);
-      result.fold(
-        (failure) => emit(SettingsFailure(errorMessage: failure.message)),
-        (_) {
-          final updatedSettings =
-              currentSettings.copyWith(isDarkMode: newTheme);
-          emit(SettingsLoaded(settings: updatedSettings));
-        },
-      );
-    }
+    if (state is! SettingsLoaded) return;
+
+    final currentSettings = (state as SettingsLoaded).settings;
+    final newTheme = !currentSettings.isDarkMode;
+
+    final result = await settingsRepo.saveTheme(newTheme);
+
+    if (isClosed) return;
+
+    result.fold(
+      (failure) {
+        if (isClosed) return;
+
+        emit(
+          SettingsFailure(
+            errorMessage: failure.message,
+          ),
+        );
+      },
+      (_) {
+        if (isClosed) return;
+
+        final updatedSettings = currentSettings.copyWith(
+          isDarkMode: newTheme,
+        );
+
+        emit(
+          SettingsLoaded(
+            settings: updatedSettings,
+          ),
+        );
+      },
+    );
   }
 
   Future<void> changeLanguage(String langCode) async {
-    if (state is SettingsLoaded) {
-      final currentSettings = (state as SettingsLoaded).settings;
+    if (isClosed) return;
 
-      final result = await settingsRepo.saveLanguage(langCode);
-      result.fold(
-        (failure) => emit(SettingsFailure(errorMessage: failure.message)),
-        (_) {
-          final updatedSettings =
-              currentSettings.copyWith(languageCode: langCode);
-          emit(SettingsLoaded(settings: updatedSettings));
-        },
-      );
-    }
+    if (state is! SettingsLoaded) return;
+
+    final currentSettings = (state as SettingsLoaded).settings;
+
+    final result = await settingsRepo.saveLanguage(langCode);
+
+    if (isClosed) return;
+
+    result.fold(
+      (failure) {
+        if (isClosed) return;
+
+        emit(
+          SettingsFailure(
+            errorMessage: failure.message,
+          ),
+        );
+      },
+      (_) {
+        if (isClosed) return;
+
+        final updatedSettings = currentSettings.copyWith(
+          languageCode: langCode,
+        );
+
+        emit(
+          SettingsLoaded(
+            settings: updatedSettings,
+          ),
+        );
+      },
+    );
   }
 
   Future<void> updateFontSize(double fontSize) async {
-    if (state is SettingsLoaded) {
-      final currentSettings = (state as SettingsLoaded).settings;
+    if (isClosed) return;
 
-      final result = await settingsRepo.saveFontSize(fontSize);
-      result.fold(
-        (failure) => emit(SettingsFailure(errorMessage: failure.message)),
-        (_) {
-          final updatedSettings = currentSettings.copyWith(fontSize: fontSize);
-          emit(SettingsLoaded(settings: updatedSettings));
-        },
-      );
-    }
+    if (state is! SettingsLoaded) return;
+
+    final currentSettings = (state as SettingsLoaded).settings;
+
+    final result = await settingsRepo.saveFontSize(fontSize);
+
+    if (isClosed) return;
+
+    result.fold(
+      (failure) {
+        if (isClosed) return;
+
+        emit(
+          SettingsFailure(
+            errorMessage: failure.message,
+          ),
+        );
+      },
+      (_) {
+        if (isClosed) return;
+
+        final updatedSettings = currentSettings.copyWith(
+          fontSize: fontSize,
+        );
+
+        emit(
+          SettingsLoaded(
+            settings: updatedSettings,
+          ),
+        );
+      },
+    );
   }
 }
