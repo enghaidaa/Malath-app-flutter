@@ -21,6 +21,7 @@ import '../../features/auth/presentation/manager/signup_cubit.dart';
 import '../../features/settings/data/repos/settings_repo.dart';
 import '../../features/settings/data/repos/settings_repo_impl.dart';
 import '../../features/settings/presentation/manager/settings_cubit.dart';
+import '../../features/home/presentation/manager/home_cubit.dart';
 import '../api/api_consumer.dart';
 import '../api/dio_consumer.dart';
 import '../api/end_points.dart';
@@ -153,6 +154,13 @@ Future<void> setupServiceLocator() async {
   sl.registerFactory<PrayerCubit>(
     () => PrayerCubit(
       sl<PrayerRepo>(),
+    ),
+  );
+
+  // Home Cubit
+  sl.registerFactory<HomeCubit>(
+    () => HomeCubit(
+      prayerRepo: sl<PrayerRepo>(),
     ),
   );
 

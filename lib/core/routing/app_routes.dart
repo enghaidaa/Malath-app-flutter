@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_poject_final/features/home/presentation/views/home_view.dart';
+import '../../features/home/presentation/manager/home_cubit.dart';
 import '../../features/quran/presentation/manager/quran_cubit.dart';
 import '../../features/quran/presentation/views/quran_view.dart';
 import '../../features/quran/presentation/views/surah_details_view.dart';
@@ -109,7 +110,10 @@ class AppRoutes {
 
       case RoutesName.home:
         return MaterialPageRoute(
-          builder: (_) => const HomeView(),
+          builder: (_) => BlocProvider(
+            create: (_) => sl<HomeCubit>()..getHomeData(),
+            child: const HomeView(),
+          ),
           settings: settings,
         );
 
