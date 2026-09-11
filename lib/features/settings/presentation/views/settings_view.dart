@@ -63,6 +63,7 @@ class _SettingsViewState extends State<SettingsView> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('settings.title'.tr()),
       ),
       body: BlocBuilder<SettingsCubit, SettingsState>(

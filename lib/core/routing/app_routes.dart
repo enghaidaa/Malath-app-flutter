@@ -66,8 +66,15 @@ class AppRoutes {
         );
       case RoutesName.azkar:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => sl<AzkarCubit>(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) => sl<AzkarCubit>(),
+              ),
+              BlocProvider(
+                create: (_) => sl<MyAzkarCubit>()..getMyAzkar(),
+              ),
+            ],
             child: const AzkarView(),
           ),
           settings: settings,

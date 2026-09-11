@@ -60,7 +60,17 @@
     "my_azkar_view": {
       "app_bar_title": "أذكاري",
       "empty_azkar": "لا توجد أذكار محفوظة",
-      "repetitions_label": "عدد التكرار: {count}"
+      "repetitions_label": "عدد التكرار: {count}",
+      "add_azkar": "إضافة ذكر",
+      "zikr_text": "نص الذكر / الدعاء",
+      "repetitions": "عدد التكرارات",
+      "reference": "المرجع (اختياري)",
+      "add": "إضافة",
+      "cancel": "إلغاء",
+      "required": "هذا الحقل مطلوب",
+      "enter_valid_repetitions": "يرجى إدخال عدد صحيح أكبر من صفر",
+      "added_successfully": "تمت إضافة الذكر بنجاح",
+      "deleted_successfully": "تم حذف الذكر بنجاح"
     },
     "home_view": {
       "greeting": "السلام عليكم 🌸",
@@ -82,7 +92,9 @@
       "app_bar_title": "الأذكار",
       "empty_state": "لا توجد أذكار متاحة",
       "repetitions_label": "عدد التكرار: {count}",
-      "azkar_count": "ذكر"
+      "azkar_count": "ذكر",
+      "added_to_my_azkar": "تمت الإضافة إلى أذكاري",
+      "removed_from_my_azkar": "تمت الإزالة من أذكاري"
     },
     "login_view": {
       "app_bar_title": "تسجيل الدخول",

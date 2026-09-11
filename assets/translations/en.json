@@ -60,7 +60,17 @@
     "my_azkar_view": {
       "app_bar_title": "My Azkar",
       "empty_azkar": "No saved azkar found",
-      "repetitions_label": "Repetitions: {count}"
+      "repetitions_label": "Repetitions: {count}",
+      "add_azkar": "Add Zikr",
+      "zikr_text": "Zikr / Dua Text",
+      "repetitions": "Repetitions",
+      "reference": "Reference (Optional)",
+      "add": "Add",
+      "cancel": "Cancel",
+      "required": "This field is required",
+      "enter_valid_repetitions": "Please enter a valid number greater than 0",
+      "added_successfully": "Zikr added successfully",
+      "deleted_successfully": "Zikr deleted successfully"
     },
     "home_view": {
       "greeting": "Peace be upon you 🌸",
@@ -82,7 +92,9 @@
       "app_bar_title": "Azkar",
       "empty_state": "No Azkar available",
       "repetitions_label": "Repetitions: {count}",
-      "azkar_count": "Azkar"
+      "azkar_count": "Azkar",
+      "added_to_my_azkar": "Added to My Azkar",
+      "removed_from_my_azkar": "Removed from My Azkar"
     },
     "login_view": {
       "app_bar_title": "Login",

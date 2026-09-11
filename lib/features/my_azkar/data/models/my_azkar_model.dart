@@ -21,12 +21,16 @@ class MyAzkarModel {
 
   factory MyAzkarModel.fromJson(Map<String, dynamic> json) {
     return MyAzkarModel(
-      id: json['id'] ?? 0,
+      id: json['id'] is int
+          ? json['id']
+          : int.tryParse(json['id']?.toString() ?? '') ?? 0,
       category: json['category'] ?? '',
       text: json['text'] ?? '',
       translation: json['translation'] ?? '',
       transliteration: json['transliteration'] ?? '',
-      repetitions: json['repetitions'] ?? 0,
+      repetitions: json['repetitions'] is int
+          ? json['repetitions']
+          : int.tryParse(json['repetitions']?.toString() ?? '') ?? 0,
       benefit: json['benefit'] ?? '',
       reference: json['reference'] ?? '',
     );
